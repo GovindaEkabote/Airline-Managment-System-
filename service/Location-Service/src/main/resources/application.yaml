@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: Location-Service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/airline_location_db
+    username: root
+    password: Govinda@1997
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+  springdoc:
+    packagesToScan: com.airline.controller
+
+
