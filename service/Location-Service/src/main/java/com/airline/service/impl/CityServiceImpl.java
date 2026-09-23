@@ -25,10 +25,6 @@ public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
 
-    // ============================================================
-    // Create City
-    // ============================================================
-
     @Override
     public CityResponse createCity(CityRequest request) {
 
@@ -50,11 +46,6 @@ public class CityServiceImpl implements CityService {
 
         return CityMapper.toResonse(savedCity);
     }
-
-    // ============================================================
-    // Bulk Create Cities
-    // ============================================================
-
     @Override
     public List<CityResponse> bulkCreateCity(
             List<CityRequest> requests) {
@@ -104,11 +95,6 @@ public class CityServiceImpl implements CityService {
                 .map(CityMapper::toResonse)
                 .toList();
     }
-
-    // ============================================================
-    // Update City
-    // ============================================================
-
     @Override
     public CityResponse updateCity(
             Long id,
@@ -123,19 +109,11 @@ public class CityServiceImpl implements CityService {
                         )
                 );
 
-        // --------------------------------------------------------
-        // Name
-        // --------------------------------------------------------
-
         if (request.getName() != null) {
             city.setName(
                     request.getName().trim()
             );
         }
-
-        // --------------------------------------------------------
-        // City Code
-        // --------------------------------------------------------
 
         if (request.getCityCode() != null) {
 
@@ -158,20 +136,11 @@ public class CityServiceImpl implements CityService {
 
             city.setCityCode(cityCode);
         }
-
-        // --------------------------------------------------------
-        // Country
-        // --------------------------------------------------------
-
         if (request.getCountry() != null) {
             city.setCountry(
                     request.getCountry().trim()
             );
         }
-
-        // --------------------------------------------------------
-        // Country Code
-        // --------------------------------------------------------
 
         if (request.getCountryCode() != null) {
             city.setCountryCode(
@@ -181,10 +150,6 @@ public class CityServiceImpl implements CityService {
             );
         }
 
-        // --------------------------------------------------------
-        // Region Code
-        // --------------------------------------------------------
-
         if (request.getRegionCode() != null) {
             city.setRegionCode(
                     request.getRegionCode()
@@ -193,19 +158,11 @@ public class CityServiceImpl implements CityService {
             );
         }
 
-        // --------------------------------------------------------
-        // Time Zone
-        // --------------------------------------------------------
-
         if (request.getTimeZoneId() != null) {
             city.setTimeZoneId(
                     request.getTimeZoneId().trim()
             );
         }
-
-        // --------------------------------------------------------
-        // Active
-        // --------------------------------------------------------
 
         if (request.getActive() != null) {
             city.setActive(
@@ -218,11 +175,6 @@ public class CityServiceImpl implements CityService {
 
         return CityMapper.toResonse(updatedCity);
     }
-
-    // ============================================================
-    // Get City By ID
-    // ============================================================
-
     @Override
     public CityResponse getCityId(Long id) {
 
@@ -238,10 +190,6 @@ public class CityServiceImpl implements CityService {
         return CityMapper.toResonse(city);
     }
 
-    // ============================================================
-    // Get All Cities
-    // ============================================================
-
     @Override
     public Page<CityResponse> getAllCities(
             Pageable pageable) {
@@ -250,10 +198,6 @@ public class CityServiceImpl implements CityService {
                 .findAll(pageable)
                 .map(CityMapper::toResonse);
     }
-
-    // ============================================================
-    // Search Cities
-    // ============================================================
 
     @Override
     public Page<CityResponse> searchCities(
@@ -265,9 +209,6 @@ public class CityServiceImpl implements CityService {
                 .map(CityMapper::toResonse);
     }
 
-    // ============================================================
-    // Get Cities By Country Code
-    // ============================================================
 
     @Override
     public Page<CityResponse> getCitiesByCountryCode(
@@ -282,9 +223,6 @@ public class CityServiceImpl implements CityService {
                 .map(CityMapper::toResonse);
     }
 
-    // ============================================================
-    // Get Cities By Active Status
-    // ============================================================
 
     @Override
     public Page<CityResponse> getCitiesByActive(
@@ -296,9 +234,6 @@ public class CityServiceImpl implements CityService {
                 .map(CityMapper::toResonse);
     }
 
-    // ============================================================
-    // Check City Exists
-    // ============================================================
 
     @Override
     public boolean cityExists(String cityCode) {
@@ -308,9 +243,6 @@ public class CityServiceImpl implements CityService {
         );
     }
 
-    // ============================================================
-    // Delete City
-    // ============================================================
 
     @Override
     public void deleteCity(Long id) {
@@ -326,10 +258,6 @@ public class CityServiceImpl implements CityService {
 
         cityRepository.delete(city);
     }
-
-    // ============================================================
-    // Activate City
-    // ============================================================
 
     @Override
     public void activateCity(Long id) {
@@ -347,10 +275,6 @@ public class CityServiceImpl implements CityService {
 
         cityRepository.save(city);
     }
-
-    // ============================================================
-    // Deactivate City
-    // ============================================================
 
     @Override
     public void deactivateCity(Long id) {

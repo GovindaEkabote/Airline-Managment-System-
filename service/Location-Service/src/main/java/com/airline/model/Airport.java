@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.ZoneId;
+
 @Entity
 @Table(
         name = "airport",
@@ -59,10 +61,24 @@ public class Airport {
     private GeoCode geoCode;
 
     @Column(name = "time_zone_id", length = 50)
-    private String timeZoneId;
+    private ZoneId timeZone;
+
+    @Column(name = "active", nullable = false)
+    @Builder.Default
+    private boolean active = true;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "city_id", nullable = false)
     @JsonIgnore
     private City city;
+
+    @JsonIgnore
+    @Transient
+    public String getDetailedName(){
+        if (city != null && city.getCountryCode() != null){
+            return name.toUpperCase() + "/" + city.getCityCode();
+        }
+        return name.toUpperCase();
+    }
+
 }
