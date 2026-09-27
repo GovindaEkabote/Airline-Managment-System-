@@ -42,6 +42,26 @@ public class AircraftResponse {
 
     private Long updatedById;
 
+    private Integer totalSeats;
+    private Integer economySeats;
+    private Integer premiumEconomySeats;
+    private Integer businessSeats;
+    private Integer firstClassSeats;
+
+    private Integer cruisingSpeedKmh;
+    private Integer rangeKm;
+    private Integer maxAltitudeFt;
+
+    private LocalDate nextMaintenanceDate;
+    private Boolean requiresMaintenance;
+
+    private Long currentAirportId;
+    private String airportCity;
+    private String airportCode;
+    private String airportName;
+
+    private Boolean operational;
+
     private Instant createdAt;
 
     private Instant updatedAt;

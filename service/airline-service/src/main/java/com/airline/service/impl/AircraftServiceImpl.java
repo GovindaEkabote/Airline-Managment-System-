@@ -1,5 +1,7 @@
 package com.airline.service.impl;
 
+import com.airline.enums.AircraftTypeStatus;
+import com.airline.enums.AirlineStatus;
 import com.airline.exception.DuplicateResourceException;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.AircraftMapper;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,34 +43,48 @@ public class AircraftServiceImpl implements AircraftService {
 
         validateUniqueFields(request);
 
-        // Validate referenced resources
+        // Validate aircraft type
         AircraftTypeResponse aircraftType =
-                aircraftTypeService.getAircraftTypeById(request.getAircraftTypeId());
+                aircraftTypeService.getAircraftTypeById(
+                        request.getAircraftTypeId()
+                );
 
-        AirlineResponse airline =
-                airlineService.getAirlineById(request.getAirlineId());
-
-        // Optional business validation
-        if (aircraftType.getStatus() == null ||
-                !"ACTIVE".equals(aircraftType.getStatus().name())) {
+        if (aircraftType.getStatus() != AircraftTypeStatus.ACTIVE) {
             throw new IllegalStateException(
-                    "Aircraft type is not active: " + request.getAircraftTypeId()
+                    "Aircraft type is not active: "
+                            + request.getAircraftTypeId()
+            );
+        }
+
+        // Validate airline
+        AirlineResponse airline =
+                airlineService.getAirlineById(
+                        request.getAirlineId()
+                );
+
+        if (airline.getStatus() != AirlineStatus.ACTIVE) {
+            throw new IllegalStateException(
+                    "Airline is not active: "
+                            + request.getAirlineId()
             );
         }
 
         Aircraft aircraft = AircraftMapper.toEntity(request);
 
-        // Default availability
-        if (aircraft.getAvailable() == null) {
-            aircraft.setAvailable(true);
-        }
-
-        // Default status
         if (aircraft.getStatus() == null) {
             aircraft.setStatus(AircraftStatus.ACTIVE);
         }
 
-        Aircraft savedAircraft = aircraftRepository.save(aircraft);
+        if (aircraft.getAvailable() == null) {
+            aircraft.setAvailable(true);
+        }
+
+        if (aircraft.getOperational() == null) {
+            aircraft.setOperational(true);
+        }
+
+        Aircraft savedAircraft =
+                aircraftRepository.save(aircraft);
 
         return toEnrichedResponse(
                 savedAircraft,
@@ -81,11 +98,26 @@ public class AircraftServiceImpl implements AircraftService {
     // =========================================================
 
     @Override
+    @Transactional(readOnly = true)
     public AircraftResponse getAircraft(Long id) {
 
         Aircraft aircraft = findAircraftById(id);
 
-        return toEnrichedResponse(aircraft);
+        AircraftTypeResponse aircraftType =
+                aircraftTypeService.getAircraftTypeById(
+                        aircraft.getAircraftTypeId()
+                );
+
+        AirlineResponse airline =
+                airlineService.getAirlineById(
+                        aircraft.getAirlineId()
+                );
+
+        return toEnrichedResponse(
+                aircraft,
+                aircraftType,
+                airline
+        );
     }
 
     // =========================================================
@@ -109,27 +141,41 @@ public class AircraftServiceImpl implements AircraftService {
             AircraftRequest request,
             Long id) {
 
+        // 1. Find existing aircraft
         Aircraft aircraft = findAircraftById(id);
 
+        // 2. Check duplicate unique fields
         validateUniqueFieldsForUpdate(request, id);
 
-        // Validate referenced aircraft type
+        // 3. Validate aircraft type
         AircraftTypeResponse aircraftType =
                 aircraftTypeService.getAircraftTypeById(
                         request.getAircraftTypeId()
                 );
 
-        // Validate airline
+        // 4. Validate airline
         AirlineResponse airline =
                 airlineService.getAirlineById(
                         request.getAirlineId()
                 );
 
-        AircraftMapper.updateEntity(aircraft, request);
+        // 5. Validate seat configuration
+        validateSeatConfiguration(request);
 
+        // 6. Validate maintenance date
+        validateMaintenanceDate(request);
+
+        // 7. Update entity
+        AircraftMapper.updateEntity(
+                aircraft,
+                request
+        );
+
+        // 8. Save
         Aircraft updatedAircraft =
                 aircraftRepository.save(aircraft);
 
+        // 9. Return enriched response
         return toEnrichedResponse(
                 updatedAircraft,
                 aircraftType,
@@ -491,6 +537,10 @@ public class AircraftServiceImpl implements AircraftService {
         response.setAircraftType(aircraftType);
         response.setAirline(airline);
 
+        response.setRequiresMaintenance(
+                requiresMaintenance(aircraft)
+        );
+
         return response;
     }
 
@@ -505,6 +555,67 @@ public class AircraftServiceImpl implements AircraftService {
         response.setAircraftType(aircraftType);
         response.setAirline(airline);
 
+        response.setRequiresMaintenance(
+                requiresMaintenance(aircraft)
+        );
+
         return response;
+    }
+
+    private boolean requiresMaintenance(Aircraft aircraft) {
+
+        return aircraft.getNextMaintenanceDate() != null
+                && !aircraft.getNextMaintenanceDate()
+                .isAfter(LocalDate.now());
+    }
+
+    private void validateSeatConfiguration(AircraftRequest request) {
+
+        int totalSeats = request.getTotalSeats() != null
+                ? request.getTotalSeats()
+                : 0;
+
+        int economySeats = request.getEconomySeats() != null
+                ? request.getEconomySeats()
+                : 0;
+
+        int premiumEconomySeats = request.getPremiumEconomySeats() != null
+                ? request.getPremiumEconomySeats()
+                : 0;
+
+        int businessSeats = request.getBusinessSeats() != null
+                ? request.getBusinessSeats()
+                : 0;
+
+        int firstClassSeats = request.getFirstClassSeats() != null
+                ? request.getFirstClassSeats()
+                : 0;
+
+        int configuredSeats =
+                economySeats
+                        + premiumEconomySeats
+                        + businessSeats
+                        + firstClassSeats;
+
+        if (configuredSeats != totalSeats) {
+            throw new IllegalArgumentException(
+                    "Seat configuration does not match total seats. " +
+                            "Total seats: " + totalSeats +
+                            ", configured seats: " + configuredSeats
+            );
+        }
+    }
+
+    private void validateMaintenanceDate(AircraftRequest request) {
+
+        if (request.getNextMaintenanceDate() != null
+                && request.getDeliveryDate() != null
+                && request.getNextMaintenanceDate()
+                .isBefore(request.getDeliveryDate())) {
+
+            throw new IllegalArgumentException(
+                    "Next maintenance date cannot be before delivery date"
+            );
+        }
     }
 }

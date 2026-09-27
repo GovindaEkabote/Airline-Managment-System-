@@ -4,6 +4,8 @@ import com.airline.enums.AircraftStatus;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,4 +39,24 @@ public class AircraftRequest {
     private java.time.LocalDate deliveryDate;
 
     private Boolean available;
+
+    private Integer totalSeats;
+
+    private Integer economySeats;
+
+    private Integer premiumEconomySeats;
+
+    private Integer businessSeats;
+
+    private Integer firstClassSeats;
+
+    private Integer cruisingSpeedKmh;
+
+    private Integer rangeKm;
+
+    private Integer maxAltitudeFt;
+
+    private LocalDate nextMaintenanceDate;
+
+    private Long currentAirportId;
 }

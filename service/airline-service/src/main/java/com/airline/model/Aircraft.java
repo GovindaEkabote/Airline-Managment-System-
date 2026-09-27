@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(
@@ -146,6 +147,28 @@ public class Aircraft {
             nullable = false
     )
     private Instant updatedAt;
+
+    // Seat configuration
+    private Integer totalSeats;
+    private Integer economySeats;
+    private Integer premiumEconomySeats;
+    private Integer businessSeats;
+    private Integer firstClassSeats;
+
+    // Performance
+    private Integer cruisingSpeedKmh;
+    private Integer rangeKm;
+    private Integer maxAltitudeFt;
+
+    // Maintenance
+    private LocalDate nextMaintenanceDate;
+
+    // Current location
+    private Long currentAirportId;
+
+    // Operational
+    private Boolean operational;
+
 
 
 }
