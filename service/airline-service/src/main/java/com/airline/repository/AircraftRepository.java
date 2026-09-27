@@ -58,4 +58,18 @@ public interface AircraftRepository extends JpaRepository<Aircraft, Long> {
 
     boolean existsByIcao24(String icao24);
 
+    boolean existsByRegistrationNumberAndIdNot(
+            String registrationNumber,
+            Long id
+    );
+
+    boolean existsBySerialNumberAndIdNot(
+            String serialNumber,
+            Long id
+    );
+
+    boolean existsByIcao24AndIdNot(
+            String icao24,
+            Long id
+    );
 }
