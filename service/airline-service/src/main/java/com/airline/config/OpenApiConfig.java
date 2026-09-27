@@ -14,7 +14,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("Airline Management System - Location Service")
+                                .title("Airline Management System - Airline Service")
                                 .version("1.0")
                                 .description("APIs for managing Airlines")
                                 .license(

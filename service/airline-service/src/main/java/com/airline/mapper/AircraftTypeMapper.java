@@ -58,45 +58,57 @@ public class AircraftTypeMapper {
 
     public static AircraftType updateEntity(
             AircraftType aircraftType,
-            AircraftTypeRequest request){
+            AircraftTypeRequest request) {
 
-        if (aircraftType == null || request == null){
+        if (aircraftType == null || request == null) {
             return aircraftType;
         }
-        if (aircraftType.getManufacturer() != null){
+
+        if (request.getManufacturer() != null) {
             aircraftType.setManufacturer(request.getManufacturer());
         }
-        if (aircraftType.getModel() != null){
+
+        if (request.getModel() != null) {
             aircraftType.setModel(request.getModel());
         }
-        if (aircraftType.getIcaoTypeCode() != null){
+
+        if (request.getIcaoTypeCode() != null) {
             aircraftType.setIcaoTypeCode(request.getIcaoTypeCode());
         }
-        if (aircraftType.getIataTypeCode() != null){
+
+        if (request.getIataTypeCode() != null) {
             aircraftType.setIataTypeCode(request.getIataTypeCode());
         }
-        if (aircraftType.getEngineCount() != null){
+
+        if (request.getEngineCount() != null) {
             aircraftType.setEngineCount(request.getEngineCount());
         }
-        if (aircraftType.getEngineType() != null){
+
+        if (request.getEngineType() != null) {
             aircraftType.setEngineType(request.getEngineType());
         }
-        if (aircraftType.getPassengerCapacity() != null){
+
+        if (request.getPassengerCapacity() != null) {
             aircraftType.setPassengerCapacity(request.getPassengerCapacity());
         }
-        if (aircraftType.getCargoCapacityKg() != null){
+
+        if (request.getCargoCapacityKg() != null) {
             aircraftType.setCargoCapacityKg(request.getCargoCapacityKg());
         }
-        if (aircraftType.getMaxRangeKm() != null){
+
+        if (request.getMaxRangeKm() != null) {
             aircraftType.setMaxRangeKm(request.getMaxRangeKm());
         }
-        if (aircraftType.getCruiseSpeedKmh() != null){
+
+        if (request.getCruiseSpeedKmh() != null) {
             aircraftType.setCruiseSpeedKmh(request.getCruiseSpeedKmh());
         }
-        if (aircraftType.getMaxTakeoffWeightKg() != null){
+
+        if (request.getMaxTakeoffWeightKg() != null) {
             aircraftType.setMaxTakeoffWeightKg(request.getMaxTakeoffWeightKg());
         }
-        if (aircraftType.getStatus() != null){
+
+        if (request.getStatus() != null) {
             aircraftType.setStatus(request.getStatus());
         }
 
