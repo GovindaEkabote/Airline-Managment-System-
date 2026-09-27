@@ -1,5 +1,6 @@
 package com.airline.playload.request;
 
+import com.airline.enums.AircraftStatus;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -10,11 +11,9 @@ import lombok.*;
 @Builder
 public class AircraftRequest {
 
-    @NotBlank(message = "Registration number is required")
     @Size(max = 10, message = "Registration number must be at most 10 characters long")
     private String registrationNumber;
 
-    @NotBlank(message = "Serial number is required")
     @Size(max = 50, message = "Serial number cannot exceed 50 characters")
     private String serialNumber;
 
@@ -25,11 +24,11 @@ public class AircraftRequest {
     )
     private String icao24;
 
-    @NotNull(message = "Aircraft type ID is required")
     private Long aircraftTypeId;
 
-    @NotNull(message = "Airline ID is required")
     private Long airlineId;
+
+    private AircraftStatus status;
 
     @Min(value = 1900, message = "Manufacture year is invalid")
     @Max(value = 2100, message = "Manufacture year is invalid")
