@@ -9,16 +9,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="common-lib" />
       </profile>
-      <profile name="Annotation profile for airline-service" enabled="true">
+      <profile name="Annotation profile for Airline System" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="airline-service" />
-        <module name="Location-Service" />
         <module name="user-service" />
+        <module name="airline-service" />
+        <module name="flight-ops-service" />
+        <module name="Location-Service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -31,6 +32,7 @@
       <module name="Location-Service" options="-parameters" />
       <module name="airline-service" options="-parameters" />
       <module name="common-lib" options="-parameters" />
+      <module name="flight-ops-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
