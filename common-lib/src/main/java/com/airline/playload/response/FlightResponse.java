@@ -15,10 +15,10 @@ public class FlightResponse {
 
     private Long id;
     private String flightNumber;
-    private Long airlineId;
-    private Long aircraftId;
-    private Long departureAirportId;
-    private Long arrivalAirportId;
+    private AirlineResponse  airline;
+    private AircraftResponse  aircraft;
+    private AirportResponse  departureAirport;
+    private AirportResponse  arrivalAirport;
     private Instant scheduledDeparture;
     private Instant scheduledArrival;
     private Instant actualDeparture;

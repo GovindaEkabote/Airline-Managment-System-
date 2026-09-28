@@ -46,7 +46,8 @@ public class Flight {
     @Column(
             name = "flight_number",
             nullable = false,
-            length = 10
+            length = 10,
+            unique = true
     )
     private String flightNumber;
 
@@ -115,7 +116,6 @@ public class Flight {
             nullable = false,
             length = 30
     )
-    @Builder.Default
     private FlightStatus status;
 
     /**
@@ -160,7 +160,6 @@ public class Flight {
      * Delay in minutes.
      */
     @Column(name = "delay_minutes", nullable = false)
-    @Builder.Default
     private Integer delayMinutes = 0;
 
     /**
@@ -173,18 +172,13 @@ public class Flight {
      * Whether passengers can currently book this flight.
      */
     @Column(name = "bookable", nullable = false)
-    @Builder.Default
     private boolean bookable = true;
 
     /**
      * Creation timestamp.
      */
     @CreatedDate
-    @Column(
-            name = "created_at",
-            nullable = false,
-            updatable = false
-    )
+    @Column(name = "created_at")
     private Instant createdAt;
 
     /**
@@ -192,8 +186,7 @@ public class Flight {
      */
     @LastModifiedDate
     @Column(
-            name = "updated_at",
-            nullable = false
+            name = "updated_at"
     )
     private Instant updatedAt;
 

@@ -3,6 +3,9 @@ package com.airline.mapper;
 import com.airline.enums.FlightStatus;
 import com.airline.model.Flight;
 import com.airline.playload.request.FlightRequest;
+import com.airline.playload.response.AircraftResponse;
+import com.airline.playload.response.AirlineResponse;
+import com.airline.playload.response.AirportResponse;
 import com.airline.playload.response.FlightResponse;
 
 import java.time.Duration;
@@ -38,7 +41,11 @@ public class FlightMapper {
                 .build();
     }
 
-    public static FlightResponse toResponse(Flight flight){
+    public static FlightResponse toResponse(Flight flight,
+                                            AircraftResponse  aircraftResponse,
+                                            AirlineResponse airlineResponse,
+                                            AirportResponse departureAirportResponse,
+                                            AirportResponse arrivalAirportResponse){
         if (flight == null){
             return null;
         }
@@ -46,10 +53,10 @@ public class FlightMapper {
         return FlightResponse.builder()
                 .id(flight.getId())
                 .flightNumber(flight.getFlightNumber())
-                .airlineId(flight.getAirlineId())
-                .aircraftId(flight.getAircraftId())
-                .departureAirportId(flight.getDepartureAirportId())
-                .arrivalAirportId(flight.getArrivalAirportId())
+                .airline(airlineResponse)
+                .aircraft(aircraftResponse)
+                .departureAirport(departureAirportResponse)
+                .arrivalAirport(arrivalAirportResponse)
                 .scheduledDeparture(flight.getScheduledDeparture())
                 .scheduledArrival(flight.getScheduledArrival())
                 .actualDeparture(flight.getActualDeparture())
@@ -174,4 +181,5 @@ public class FlightMapper {
                 arrival
         ).toMinutes();
     }
+
 }

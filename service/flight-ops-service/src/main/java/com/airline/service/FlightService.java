@@ -20,5 +20,5 @@ public interface FlightService {
     FlightResponse getFlightById(Long id);
     FlightResponse updateFlight(Long id, FlightRequest flightRequest);
     FlightResponse changeStatus(Long id, FlightStatus status);
-    void deleteFlight(Long id);
+    void deleteFlight(Long airlineId, Long id);
 }
