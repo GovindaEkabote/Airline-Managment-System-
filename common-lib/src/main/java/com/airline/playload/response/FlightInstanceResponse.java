@@ -19,9 +19,11 @@ public class FlightInstanceResponse {
 
     private FlightResponse flight;
 
-    private Long departureAirportId;
+    private AircraftResponse aircraft;
 
-    private Long arrivalAirportId;
+    private AirportResponse  departureAirport;
+
+    private AirportResponse arrivalAirport;
 
     private Long scheduleId;
 

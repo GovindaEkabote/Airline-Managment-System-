@@ -64,7 +64,7 @@ public class FlightInstance {
     private Boolean isActive = true;
 
     @Transient
-    private String getFormatedDuration() {
+    public String getFormatedDuration() {
         if (departureDateTime == null || arrivalDateTime == null){
             return null;
         }

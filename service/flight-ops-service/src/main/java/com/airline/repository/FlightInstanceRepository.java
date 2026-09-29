@@ -13,17 +13,16 @@ import java.util.Optional;
 public interface FlightInstanceRepository extends JpaRepository<FlightInstance, Long> {
 
     @Query("""
-            SELECT fi 
-            FROM FlightInstance fi
+            SELECT fi FROM FlightInstance fi
             WHERE fi.airlineId = :airlineId
                 AND (:departureAirportId IS NULL 
                    OR fi.departureAirportId = :departureAirportId)
                 AND (:arrivalAirportId IS NULL 
                    OR fi.arrivalAirportId = :arrivalAirportId)
-                AND (:flightId IS NULL 
-                   OR fi.flightId = :flightId)
+                AND (:flight IS NULL 
+                   OR fi.flight = :flight)
                 AND (:onDate IS NULL 
-                   OR ((fi.departureDateTime >= :onDate 
+                   OR (fi.departureDateTime >= :onDate 
                    AND fi.departureDateTime < :nextDate
                 ))  
             """)
@@ -45,6 +44,12 @@ public interface FlightInstanceRepository extends JpaRepository<FlightInstance, 
             Long scheduleId,
             Pageable pageable
     );
+
+    Page<FlightInstance>  findByFlightId(
+            Long flightId,
+            Pageable pageable
+    );
+
 
     Page<FlightInstance> findByFlight_Id(
             Long flightId,
