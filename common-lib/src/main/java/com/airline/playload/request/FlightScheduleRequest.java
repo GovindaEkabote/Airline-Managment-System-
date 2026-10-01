@@ -22,6 +22,10 @@ public class FlightScheduleRequest {
     @Positive(message = "Flight ID must be positive")
     private Long flightId;
 
+    @NotNull(message = "departureAirpotId cannot be null")
+    private Long departureAirpotId;
+    @NotNull(message = "arrivalAirportId cannot be null")
+    private Long arrivalAirportId;
     @NotNull(message = "Departure time cannot be null")
     private LocalTime departureTime;
     @NotNull(message = "Arrival time cannot be null")

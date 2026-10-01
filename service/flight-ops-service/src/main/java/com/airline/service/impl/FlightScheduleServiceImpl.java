@@ -32,48 +32,80 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
     private final FlightInstanceService flightInstanceService;
 
     @Override
-    public FlightScheduleResponse createFlightSchedule(Long airlineId,
-                                                       FlightScheduleRequest request) {
-        Flight flight = flightRepository.findById(airlineId)
+    public FlightScheduleResponse createFlightSchedule(
+            Long airlineId,
+            FlightScheduleRequest request) {
+
+        Flight flight = flightRepository.findById(request.getFlightId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "airlineId not found",
+                        "Flight not found",
                         "id",
-                        airlineId));
+                        request.getFlightId()
+                ));
 
-        if (request.getEndDate().isBefore(request.getStartDate())){
-            throw new IllegalArgumentException("End date must be after start date");
+        if (!flight.getAirlineId().equals(airlineId)) {
+            throw new IllegalArgumentException(
+                    "Flight does not belong to the specified airline"
+            );
         }
 
-        FlightSchedule flightSchedule = FlightScheduleMapper.toEntity(request, flight);
-        FlightSchedule savedSchedule = flightScheduleRepository.save(flightSchedule);
+        if (request.getEndDate().isBefore(request.getStartDate())) {
+            throw new IllegalArgumentException(
+                    "End date must be on or after start date"
+            );
+        }
 
-        List<DayOfWeek> operatingDays = savedSchedule.getOperatingDays();
-        LocalDate startDate = savedSchedule.getStartDate();
-        LocalDate endDate = savedSchedule.getEndDate();
+        FlightSchedule flightSchedule =
+                FlightScheduleMapper.toEntity(request, flight);
 
-        FlightInstanceRequest flightInstanceRequest = FlightInstanceRequest
-                .builder()
-                .scheduleId(savedSchedule.getId())
-                .flightId(flight.getId())
-                .arrivalAirportId(flight.getArrivalAirportId())
-                .departureAirportId(flight.getDepartureAirportId())
-                .status(FlightStatus.SCHEDULED)
-                .build();
+        FlightSchedule savedSchedule =
+                flightScheduleRepository.save(flightSchedule);
 
-        for (LocalDate date=startDate ; !date.isAfter(endDate) ; date=date.plusDays(1)){
-            if (operatingDays.contains(date.getDayOfWeek())){
-                flightInstanceRequest.setDepartureDateTime(
-                        LocalDateTime.of(date,savedSchedule.getDepartureTime())
-                );
+        List<DayOfWeek> operatingDays =
+                savedSchedule.getOperatingDays();
 
-                flightInstanceRequest.setArrivalDateTime(
-                        LocalDateTime.of(date, savedSchedule.getArrivalTime())
-                );
+        LocalDate startDate =
+                savedSchedule.getStartDate();
 
-                flightInstanceService.createFlightInstance(airlineId, flightInstanceRequest);
+        LocalDate endDate =
+                savedSchedule.getEndDate();
+
+        FlightInstanceRequest flightInstanceRequest =
+                FlightInstanceRequest.builder()
+                        .scheduleId(savedSchedule.getId())
+                        .flightId(flight.getId())
+                        .departureAirportId(flight.getDepartureAirportId())
+                        .arrivalAirportId(flight.getArrivalAirportId())
+                        .status(FlightStatus.SCHEDULED)
+                        .build();
+
+        for (LocalDate date = startDate;
+             !date.isAfter(endDate);
+             date = date.plusDays(1)) {
+
+            if (!operatingDays.contains(date.getDayOfWeek())) {
+                continue;
             }
-        }
 
+            flightInstanceRequest.setDepartureDateTime(
+                    LocalDateTime.of(
+                            date,
+                            savedSchedule.getDepartureTime()
+                    )
+            );
+
+            flightInstanceRequest.setArrivalDateTime(
+                    LocalDateTime.of(
+                            date,
+                            savedSchedule.getArrivalTime()
+                    )
+            );
+
+            flightInstanceService.createFlightInstance(
+                    airlineId,
+                    flightInstanceRequest
+            );
+        }
 
         return convertToFlightScheduleResponse(savedSchedule);
     }
@@ -179,12 +211,7 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
         AirportResponse arrivalAirport = AirportResponse.builder()
                 .id(schedule.getArrivalAirportId())
                 .build();
-        FlightScheduleResponse flightResponse =
-                FlightScheduleMapper.toResponse(
-                        schedule,
-                        departureAirport,
-                        arrivalAirport
-                );
+
         return FlightScheduleMapper.toResponse(
                 schedule,
                 departureAirport,
