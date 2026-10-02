@@ -1,15 +1,36 @@
 package com.airline.playload.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.OneToOne;
+import lombok.*;
 
-@Data
-@Builder
+import java.time.Instant;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class FareRuleResponse {
 
     private Long id;
+
+    private String ruleName;
+
+    private Long airlineId;
+
+    private Long fareId;
+
+    private Boolean isRefundable;
+
+    private Double changeFee;
+
+    private Double cancellationFee;
+
+    private Integer refundDeadlineDays;
+
+    private Integer changeDeadlineHours;
+
+    private Boolean isChangeable;
+    private Instant createdAt;
+    private Instant updatedAt;
 }
