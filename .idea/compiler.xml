@@ -20,6 +20,7 @@
         <module name="airline-service" />
         <module name="flight-ops-service" />
         <module name="Location-Service" />
+        <module name="pricing-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -33,6 +34,7 @@
       <module name="airline-service" options="-parameters" />
       <module name="common-lib" options="-parameters" />
       <module name="flight-ops-service" options="-parameters" />
+      <module name="pricing-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
