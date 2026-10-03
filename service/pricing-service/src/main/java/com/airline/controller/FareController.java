@@ -96,6 +96,7 @@ public class FareController {
     @DeleteMapping("/{id}")
     public void deleteFare(@PathVariable Long id) {
         fareService.deleteFare(id);
+
     }
 
     @GetMapping("/lowest")

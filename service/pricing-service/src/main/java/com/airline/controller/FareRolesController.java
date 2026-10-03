@@ -16,9 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(
-        value = "/api/v1/fares/roles",
+        value = "/api/v1/fares/rules",
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 @RequiredArgsConstructor
@@ -85,6 +87,40 @@ public class FareRolesController {
         log.info("Deleting fare roles with id: {}", id);
         fareRolesService.deleteFareRoles(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/fare/{fareId}")
+    @Operation(summary = "Get Fare Roles by Fare ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Fare roles retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Fare roles not found")
+    })
+    public ResponseEntity<FareRuleResponse> getFareRolesByFareId(@PathVariable Long fareId) {
+        log.info("Fetching fare roles for fare id: {}", fareId);
+        FareRuleResponse fareRoles = fareRolesService.getFareRolesByFareId(fareId);
+        if (fareRoles != null) {
+            return ResponseEntity.ok(fareRoles);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/airline/{airlineId}")
+    @Operation(summary = "Get Fare Roles by Airline ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Fare roles retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Fare roles not found")
+    })
+    public ResponseEntity<List<FareRuleResponse>> getFareRolesByAirlineId(
+            @PathVariable Long airlineId
+    ) {
+        log.info("Fetching fare roles for airline id: {}", airlineId);
+        List<FareRuleResponse> fareRolesList = fareRolesService.getFareRolesByAirlineId(airlineId);
+        if (!fareRolesList.isEmpty()) {
+            return ResponseEntity.ok(fareRolesList);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
