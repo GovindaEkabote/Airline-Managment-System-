@@ -4,6 +4,6 @@ public enum CabinClassType {
 
     ECONOMY,
     PREMIUM_ECONOMY,
-    BUSINESS,
-    FIRST;
+    BUSINESS_CLASS,
+    FIRST_CLASS;
 }
