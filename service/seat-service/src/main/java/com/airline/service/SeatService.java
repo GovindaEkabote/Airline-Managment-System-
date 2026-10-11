@@ -12,6 +12,7 @@ public interface SeatService {
 
     SeatResponse updateSeat(Long seatId, SeatRequest request);
 
+
     // getAll
     List<SeatResponse> getAllSeats();
 }

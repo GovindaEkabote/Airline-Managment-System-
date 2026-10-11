@@ -21,9 +21,7 @@ public class SeatMapResponse {
     private String name;
 
     private int totalRows;
-
     private int rightSeatsPerRow;
-
     private int leftSeatsPerRow;
 
     private Long airlineId;
@@ -32,9 +30,23 @@ public class SeatMapResponse {
 
     private List<SeatResponse> seats;
 
-    private CabinClassResponse cabinClass;
+    // ✅ Flat reference to the parent — no recursion
+    private Long cabinClassId;
+    private String cabinClassName;
+    private String cabinClassCode;
+
+    private Integer totalSeats;
+    private Integer availableSeats;
+    private Integer occupiedSeats;
+
+    private Integer windowsSeats;
+    private Integer aisleSeats;
+    private Integer middleSeats;
+    private Integer premiumSeats;
+    private Integer emergencyExitSeats;
+
+    // optional, if you have a code like ECONOMY/BUSINESS
 
     private Instant createdAt;
-
     private Instant updatedAt;
 }

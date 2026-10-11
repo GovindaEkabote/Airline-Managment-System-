@@ -1,34 +1,44 @@
 package com.airline.mapper;
 
-import com.airline.enums.SeatType;
 import com.airline.model.Seat;
-import com.airline.playload.request.SeatRequest;
+import com.airline.playload.response.SeatResponse;
 
 public class SeatMapper {
 
-    public static Seat toEntity(SeatRequest request) {
-        if (request == null) {
-            return null;
-        }
-        return Seat.builder()
-                .seatNumber(request.getSeatNumber())
-                .seatRow(request.getSeatRow())
-                .columnLetter(request.getColumnLetter())
-                .seatType(SeatType.valueOf(request.getSeatType()))
-                .basePrice(request.getBasePrice())
-                .premiumSurcharge(request.getPremiumSurcharge())
-                .isAvailable(request.getIsAvailable() != null ? request.getIsAvailable() : true)
-                .isBlocked(request.getIsBlocked() != null ? request.getIsBlocked() : false)
-                .isActive(request.getIsActive() != null ? request.getIsActive() : true)
-                .isEmergencyExit(request.getIsEmergencyExit() != null ? request.getIsEmergencyExit() : false)
-                .isExtraLegroom(request.getIsExtraLegroom() != null ? request.getIsExtraLegroom() : false)
-                .isPowerOutlet(request.getIsPowerOutlet() != null ? request.getIsPowerOutlet() : false)
-                .isTvScreen(request.getIsTvScreen() != null ? request.getIsTvScreen() : false)
-                .isExtraWidth(request.getIsExtraWidth() != null ? request.getIsExtraWidth() : false)
-                .seatPitch(request.getSeatPitch())
-                .seatWidth(request.getSeatWidth())
-                .seatMapId(request.getSeatMapId())
-                .cabinClassId(request.getCabinClassId())
+    public static SeatResponse toResponse(Seat seat){
+        return SeatResponse.builder()
+                .id(seat.getId())
+                .seatNumber(seat.getSeatNumber())
+                .seatRow(seat.getSeatRow())
+                .columnLetter(seat.getColumnLetter())
+                .seatType(seat.getSeatType().name())
+
+                .basePrice(seat.getBasePrice())
+                .premiumSurcharge(seat.getPremiumSurcharge())
+                .totalPrice(seat.getTotalPrice())
+
+                .available(seat.getIsAvailable())
+                .blocked(seat.getIsBlocked())
+                .active(Boolean.TRUE.equals(seat.getIsActive()))
+                .bookable(seat.isBookable())
+
+                .emergencyExit(seat.getIsEmergencyExit())
+                .extraLegroom(seat.getIsExtraLegroom())
+                .powerOutlet(seat.getIsPowerOutlet())
+                .tvScreen(seat.getIsTvScreen())
+                .extraWidth(seat.getIsExtraWidth())
+
+                .seatPitch(seat.getSeatPitch())
+                .seatWidth(seat.getSeatWidth())
+
+                .seatMapId(seat.getSeatMap().getId())
+                .cabinClassId(seat.getCabinClass().getId())
+                .cabinClassName(seat.getCabinClass().getCode())
+                .createdDate(seat.getCreatedDate())
+                .lastModifiedDate(seat.getLastModifiedDate())
+                .version(seat.getVersion())
+
                 .build();
+
     }
 }

@@ -50,8 +50,6 @@ public abstract class BaseEntity {
     @Column(name = "updated_by", length = 100)
     private String updatedBy;
 
-    @Version
-    private Long version;
 
     @Override
     public final boolean equals(Object e){

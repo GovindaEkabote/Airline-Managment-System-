@@ -1,6 +1,7 @@
 package com.airline.mapper;
 
 import com.airline.model.CabinClass;
+import com.airline.model.SeatMap;
 import com.airline.playload.request.CabinClassRequest;
 import com.airline.playload.request.SeatMapRequest;
 import com.airline.playload.response.CabinClassResponse;
@@ -9,35 +10,41 @@ public class CabinClassMapper {
 
     public static CabinClass toEntity(
             CabinClassRequest request
-//            SeatMapRequest SeatMapRequest
     ){
         if (request == null){
             return null;
         }
 
         return CabinClass.builder()
-                .aircraftId(request.getAircraftId())
+                .name(request.getName())
                 .cabinClassType(request.getCabinClassType())
+                .aircraftId(request.getAircraftId())
                 .code(request.getCode())
                 .displayOrder(request.getDisplayOrder() != null ? request.getDisplayOrder() : 0)
                 .description(request.getDescription())
-                .isActive(request.getIsActive() != null? request.getIsActive(): true)
+                .isActive(request.getIsActive() != null ? request.getIsActive() : true)
                 .isBookable(request.getIsBookable() != null ? request.getIsBookable() : true)
                 .typicalSeatPitch(request.getTypicalSeatPitch())
+                .typicalSeatWidth(request.getTypicalSeatWidth())
                 .seatType(request.getSeatType())
                 .build();
     }
 
-    public static CabinClassResponse toResponse(CabinClass cabinClass){
+    public static CabinClassResponse toResponse(CabinClass cabinClass,
+                                                SeatMap seatMap){
         if (cabinClass == null){
             return null;
         }
         return CabinClassResponse.builder()
                 .id(cabinClass.getId())
-//                .seatMapId(SeatMapMapper.toResponse(cabinClass.getSeatMap()))
+                .seatMapId(seatMap != null ? SeatMapMapper.toResponse(seatMap) : null)
                 .aircraftId(cabinClass.getAircraftId())
                 .cabinClassType(cabinClass.getCabinClassType())
                 .code(cabinClass.getCode())
+                .code(cabinClass.getName())
+                .displayOrder(cabinClass.getDisplayOrder())
+                .typicalSeatPitch(cabinClass.getTypicalSeatPitch())
+                .typicalSeatWidth(cabinClass.getTypicalSeatWidth())
                 .description(cabinClass.getDescription())
                 .displayOrder(cabinClass.getDisplayOrder())
                 .isActive(cabinClass.getIsActive())
@@ -64,6 +71,10 @@ public class CabinClassMapper {
 
         if (request.getCabinClassType() != null) {
             cabinClass.setCabinClassType(request.getCabinClassType());
+        }
+
+        if (request.getName() != null){
+            cabinClass.setName(request.getName());
         }
 
         if (request.getCode() != null) {

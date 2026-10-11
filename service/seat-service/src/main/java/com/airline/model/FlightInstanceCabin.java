@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ public class FlightInstanceCabin extends BaseEntity{
     @Column(name = "total_seats", nullable = false)
     private int totalSeats;
 
+
     @Min(0)
     @Builder.Default
     @Column(name = "booked_seats", nullable = false)
@@ -47,24 +47,5 @@ public class FlightInstanceCabin extends BaseEntity{
 
     public int getAvailableSeats() {
         return totalSeats - bookedSeats;
-    }
-
-    public void bookSeat() {
-        if (bookedSeats >= totalSeats) {
-            throw new IllegalStateException("Cabin is full");
-        }
-        bookedSeats++;
-    }
-
-    public void releaseSeat() {
-        if (bookedSeats <= 0) {
-            throw new IllegalStateException("No booked seats to release");
-        }
-        bookedSeats--;
-    }
-
-    public void addSeatInstance(SeatInstance si) {
-        seatInstances.add(si);
-        si.setFlightInstanceCabin(this);
     }
 }

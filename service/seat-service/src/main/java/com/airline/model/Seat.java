@@ -55,33 +55,37 @@ public class Seat extends BaseEntity{
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean isAvailable = true;        // seat physically exists / usable
+    private Boolean isAvailable = true;        // seat physically exists / usable
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean isBlocked = false;
+    private Boolean isBlocked = false;
 
-    private Boolean isActive=true;
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
+    private String fullPosition;
 
     @Builder.Default
     @Column(name = "emergency_exit")
-    private boolean isEmergencyExit = false;
+    private Boolean isEmergencyExit = false;
 
     @Builder.Default
     @Column(name = "extra_legroom")
-    private boolean isExtraLegroom = false;
+    private Boolean isExtraLegroom = false;
 
     @Builder.Default
     @Column(name = "power_outlet")
-    private boolean isPowerOutlet = false;
+    private Boolean isPowerOutlet = false;
 
     @Builder.Default
     @Column(name = "tv_screen")
-    private boolean isTvScreen = false;
+    private Boolean isTvScreen = false;
 
     @Builder.Default
     @Column(name = "extra_width")
-    private boolean isExtraWidth = false;
+    private Boolean isExtraWidth = false;
 
     @Positive
     @Column(name = "seat_pitch_in")
@@ -102,7 +106,7 @@ public class Seat extends BaseEntity{
     private CabinClass cabinClass;
 
     @CreatedBy
-    @Column(name = "created_date", nullable = false, updatable = false)
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
@@ -119,13 +123,36 @@ public class Seat extends BaseEntity{
         return base.add(extra);
     }
 
-    public boolean isBookable() {
-        return isAvailable && !isBlocked && isActive;
-    }
 
     public String getFullSeatNumber() {
         return seatRow + String.valueOf(columnLetter);
     }
 
+    public boolean isBookable() {
+        return Boolean.TRUE.equals(isAvailable)
+                && !Boolean.TRUE.equals(isBlocked)
+                && Boolean.TRUE.equals(isActive);
+    }
 
+    public boolean isWindowSeat() {
+        return seatType != null && seatType.name().contains("WINDOW");
+    }
+
+    public boolean isAisleSeat() {
+        return seatType != null && seatType.name().contains("AISLE");
+    }
+
+    public boolean isMiddleSeat() {
+        return seatType != null && seatType.name().contains("MIDDLE");
+    }
+
+    public boolean isPremiumSeat() {
+        return Boolean.TRUE.equals(isExtraLegroom)
+                || Boolean.TRUE.equals(isEmergencyExit)
+                || Boolean.TRUE.equals(isExtraWidth);
+    }
+
+    public boolean isEmergencyExitSeat() {
+        return Boolean.TRUE.equals(isEmergencyExit);
+    }
 }

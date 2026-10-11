@@ -31,21 +31,21 @@
         @PositiveOrZero
         private BigDecimal premiumSurcharge;
 
-        private Boolean isAvailable;
+        private boolean isAvailable;
 
-        private Boolean isBlocked;
+        private boolean isBlocked;
 
-        private Boolean isActive;
+        private boolean isActive;
 
-        private Boolean isEmergencyExit;
+        private boolean isEmergencyExit;
 
-        private Boolean isExtraLegroom;
+        private boolean isExtraLegroom;
 
-        private Boolean isPowerOutlet;
+        private boolean isPowerOutlet;
 
-        private Boolean isTvScreen;
+        private boolean isTvScreen;
 
-        private Boolean isExtraWidth;
+        private boolean isExtraWidth;
 
         @Positive
         private Integer seatPitch;

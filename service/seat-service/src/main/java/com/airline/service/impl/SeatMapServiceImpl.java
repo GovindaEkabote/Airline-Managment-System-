@@ -10,6 +10,7 @@ import com.airline.playload.response.SeatMapResponse;
 import com.airline.repository.CabinClassRepository;
 import com.airline.repository.SeatMapRepository;
 import com.airline.service.SeatMapService;
+import com.airline.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.coyote.BadRequestException;
@@ -26,6 +27,8 @@ public class SeatMapServiceImpl implements SeatMapService {
 
     private final SeatMapRepository seatMapRepository;
     private final CabinClassRepository  cabinClassRepository;
+    private final SeatService seatService;
+
 
 
     @Override
@@ -51,7 +54,7 @@ public class SeatMapServiceImpl implements SeatMapService {
         seatMap.setAirlineId(airlineId);
 
         SeatMap savedSeatMap = seatMapRepository.save(seatMap);
-        // toDo : generate seat for seat map
+        seatService.generateSeatsForSeatMap(savedSeatMap.getId());
         return SeatMapMapper.toResponse(savedSeatMap);
     }
 

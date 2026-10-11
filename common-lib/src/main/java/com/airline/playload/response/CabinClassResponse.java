@@ -14,29 +14,20 @@ public class CabinClassResponse {
 
     private Long id;
     private SeatMapResponse seatMapId;
-
     private Long aircraftId;
-
     private CabinClassType cabinClassType;
-
     private String code;
-
+    private String name;
     private String description;
-
     private Integer displayOrder;
-
     private Boolean isActive;
-
     private Boolean isBookable;
-
     private Integer typicalSeatPitch;
-
     private Integer typicalSeatWidth;
-
     private String seatType;
-
     private Instant createdAt;
-
     private Instant updatedAt;
+
+    private SeatMapResponse seatMapResponse;
 
 }

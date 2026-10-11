@@ -40,6 +40,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @SuperBuilder
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CabinClass extends BaseEntity{
 
@@ -56,6 +57,9 @@ public class CabinClass extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(name = "cabin_class_type", nullable = false, length = 30)
     private CabinClassType cabinClassType;
+
+    @NotBlank
+    private String name;
 
     @NotBlank
     @Size(max = 10)
@@ -87,6 +91,9 @@ public class CabinClass extends BaseEntity{
     @Size(max = 50)
     @Column(name = "seat_type", length = 50)
     private String seatType;
+
+
+
 
     public void attachSeatMap(SeatMap map) {
         this.seatMap = map;
