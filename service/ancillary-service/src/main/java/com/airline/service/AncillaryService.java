@@ -10,9 +10,7 @@ public interface AncillaryService {
     AncillaryResponse createAncillary(Long airlineId, AncillaryRequest request);
     AncillaryResponse getbyId(Long id) throws Exception;
     List<AncillaryResponse> getAirlineId(
-            Long id,
-            AncillaryRequest request
-    );
+            Long id);
     AncillaryResponse updateAncillary(Long id, AncillaryRequest request);
     void deleteAncillary(Long id);
 

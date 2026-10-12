@@ -1,5 +1,6 @@
 package com.airline.service.impl;
 
+import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.AncillaryMapper;
 import com.airline.model.Ancillary;
 import com.airline.playload.request.AncillaryRequest;
@@ -9,8 +10,10 @@ import com.airline.service.AncillaryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,17 +45,52 @@ public class AncillaryServiceImpl implements AncillaryService {
     }
 
     @Override
-    public List<AncillaryResponse> getAirlineId(Long id, AncillaryRequest request) {
-        return List.of();
+    public List<AncillaryResponse> getAirlineId(Long id) {
+        return ancillaryRepository.findById(id)
+                .stream()
+                .map(
+                        ancillary -> {
+//                          ToDo:  fetch insurance coverages by ancillary
+                            return AncillaryMapper.toResponse(ancillary,null);
+                        }
+                )
+                .collect(Collectors.toList());
     }
 
+
     @Override
-    public AncillaryResponse updateAncillary(Long id, AncillaryRequest request) {
-        return null;
+    @Transactional
+    public AncillaryResponse updateAncillary(
+            Long id,
+            AncillaryRequest request) {
+
+        if (request == null) {
+            throw new IllegalArgumentException(
+                    "Ancillary request must not be null");
+        }
+
+        Ancillary ancillary = ancillaryRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Ancillary not found with id: " + id));
+
+        // Update the existing entity
+        AncillaryMapper.updateEntity(ancillary, request);
+
+        // Save the updated entity
+        Ancillary updatedAncillary =
+                ancillaryRepository.save(ancillary);
+
+        // Convert entity to response DTO
+        return AncillaryMapper.toResponse(updatedAncillary, null);
     }
+
 
     @Override
     public void deleteAncillary(Long id) {
+        Ancillary ancillary
+                = ancillaryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found"));
 
+        ancillaryRepository.delete(ancillary);
     }
 }

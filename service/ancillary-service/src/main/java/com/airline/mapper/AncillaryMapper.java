@@ -52,4 +52,46 @@ public class AncillaryMapper {
                 .converageResponses(converageResponses)
                 .build();
     }
+
+    public static Ancillary  updateEntity(
+            Ancillary ancillary,
+            AncillaryRequest request
+    ){
+
+        if (request == null || ancillary == null){
+            return  null;
+        }
+
+        if (request.getAncillaryType() != null){
+            ancillary.setAncillaryType(request.getAncillaryType());
+        }
+        if(request.getSubType() != null){
+            ancillary.setSubType(request.getSubType());
+        }
+
+        if (request.getRfisc() != null){
+            ancillary.setRfisc(request.getRfisc());
+        }
+
+        if (request.getName() != null){
+            ancillary.setName(request.getName());
+        }
+        if (request.getDescription() != null){
+            ancillary.setDescription(request.getDescription());
+        }
+        if (request.getIconUrl() != null){
+            ancillary.setIconUrl(request.getIconUrl());
+        }
+
+        if (request.getAncillaryMataData() != null){
+            ancillary.setAncillaryMataData(request.getAncillaryMataData());
+        }
+
+        if (request.getDisplayOrder() != null){
+            ancillary.setDisplayOrder(request.getDisplayOrder());
+        }
+
+
+        return ancillary;
+    }
 }
