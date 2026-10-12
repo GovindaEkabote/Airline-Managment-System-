@@ -11,7 +11,7 @@ import java.util.List;
 public class AncillaryMapper {
 
     private AncillaryMapper() {
-        // Utility class
+
     }
 
     public static Ancillary toEntity(AncillaryRequest request, Long airlineID){

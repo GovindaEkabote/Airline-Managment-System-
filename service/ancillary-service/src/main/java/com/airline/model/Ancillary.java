@@ -22,10 +22,11 @@ import lombok.*;
 public class Ancillary {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "ancillary_type", nullable = false)
     private AncillaryType ancillaryType;
 
     private String subType;
