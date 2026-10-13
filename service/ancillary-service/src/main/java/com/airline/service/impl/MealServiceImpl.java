@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,46 +62,134 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public MealResponse updateMeal(Long id, MealRequest request) {
-        return null;
+        Meal meal = mealRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Meal not found with ID: " + id
+                        )
+                );
+
+        // Preserve the existing ancillary unless a new ID is provided.
+        Ancillary ancillary = meal.getAncillary();
+
+        if (request.getAncillaryId() != null) {
+            ancillary = ancillaryRepository.findById(request.getAncillaryId())
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException(
+                                    "Ancillary not found with ID: "
+                                            + request.getAncillaryId()
+                            )
+                    );
+        }
+
+        MealMapper.updateEntity(meal, request, ancillary);
+        Meal saved = mealRepository.save(meal);
+        AncillaryResponse ancillaryResponse = ancillary != null
+                ? AncillaryMapper.toResponse(ancillary, null)
+                : null;
+
+        // Meal stores airlineId, not an Airline entity.
+        // Fetch AirlineResponse through your airline service/client if required.
+        AirlineResponse airlineResponse = null;
+        return MealMapper.toResponse(saved, ancillaryResponse, airlineResponse);
     }
 
     @Override
     public MealResponse getMealById(Long id) {
-        return null;
+        Meal meal = mealRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Meal not found with ID: " + id
+                        )
+                );
+
+        AncillaryResponse ancillaryResponse = meal.getAncillary() != null
+                ? AncillaryMapper.toResponse(meal.getAncillary(), null)
+                : null;
+
+        // Fetch through your airline service/client if airline details are required.
+        AirlineResponse airlineResponse = null;
+
+        return MealMapper.toResponse(
+                meal,
+                ancillaryResponse,
+                airlineResponse
+        );
     }
 
     @Override
     public List<MealResponse> getAllMeals() {
-        return List.of();
+        AirlineResponse airlineResponse = null;
+        return mealRepository.findAll()
+                .stream()
+                .map(this::toMealResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<MealResponse> getMealsByAirlineId(Long airlineId) {
-        return List.of();
+        return mealRepository.findByAirlineId(airlineId)
+                .stream()
+                .map(this::toMealResponse)
+                .toList();
     }
 
     @Override
     public List<MealResponse> getMealsByAncillaryId(Long ancillaryId) {
-        return List.of();
+        return mealRepository.findByAncillary_Id(ancillaryId)
+                .stream()
+                .map(this::toMealResponse)
+                .toList();
     }
 
     @Override
     public List<MealResponse> getAvailableMeals(Long airlineId) {
-        return List.of();
+        return mealRepository
+                .findByAirlineIdAndAvailableTrueAndActiveTrue(airlineId)
+                .stream()
+                .map(this::toMealResponse)
+                .toList();
     }
 
     @Override
     public void activateMeal(Long id) {
-
+        Meal meal = getMealEntityById(id);
+        meal.setActive(true);
+        mealRepository.save(meal);
     }
 
     @Override
     public void deactivateMeal(Long id) {
-
+        Meal meal = getMealEntityById(id);
+        meal.setActive(false);
+        mealRepository.save(meal);
     }
 
     @Override
     public void deleteMeal(Long id) {
+        Meal meal = getMealEntityById(id);
+        mealRepository.delete(meal);
+    }
 
+    private Meal getMealEntityById(Long id) {
+        return mealRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Meal not found with ID: " + id
+                        )
+                );
+    }
+
+    private MealResponse toMealResponse(Meal meal){
+        AncillaryResponse ancillaryResponse = meal.getAncillary() != null
+                ? AncillaryMapper.toResponse(meal.getAncillary(), null)
+                : null;
+        AirlineResponse airlineResponse = null;
+
+        return MealMapper.toResponse(
+                meal,
+                ancillaryResponse,
+                airlineResponse
+        );
     }
 }

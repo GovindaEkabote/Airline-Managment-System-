@@ -12,10 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -31,29 +30,160 @@ public class MealController {
 
     private final MealService mealService;
 
-    @PostMapping(
-            value = "/meal",
-            consumes = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Create Meal",
-            description = "Creates a new ancillary service for an Meal."
+            description = "Creates a new meal catalog item."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201",
-                    description = "Meal created successfully"),
-            @ApiResponse(responseCode = "400",
-                    description = "Validation failed"),
-            @ApiResponse(responseCode = "404",
-                    description = "Meal not found"),
-            @ApiResponse(responseCode = "409",
-                    description = "Meal already exists")
+            @ApiResponse(responseCode = "201", description = "Meal created successfully"),
+            @ApiResponse(responseCode = "400", description = "Validation failed"),
+            @ApiResponse(responseCode = "404", description = "Ancillary not found"),
+            @ApiResponse(responseCode = "409", description = "Meal already exists")
     })
     public ResponseEntity<MealResponse> createMeal(
             @Valid @RequestBody MealRequest request
-            ){
+    ) {
         MealResponse response = mealService.createMeal(request);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping(
+            value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(
+            summary = "Update Meal",
+            description = "Updates an existing meal catalog item."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Meal updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Meal or ancillary not found")
+    })
+    public ResponseEntity<MealResponse> updateMeal(
+            @PathVariable Long id,
+            @Valid @RequestBody MealRequest request
+    ) {
+        return ResponseEntity.ok(mealService.updateMeal(id, request));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get Meal By ID",
+            description = "Retrieves a meal by its ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Meal retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Meal not found")
+    })
+    public ResponseEntity<MealResponse> getMealById(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(mealService.getMealById(id));
+    }
+
+    @GetMapping
+    @Operation(
+            summary = "Get All Meals",
+            description = "Retrieves all meal catalog items."
+    )
+    @ApiResponse(responseCode = "200", description = "Meals retrieved successfully")
+    public ResponseEntity<List<MealResponse>> getAllMeals() {
+        return ResponseEntity.ok(mealService.getAllMeals());
+    }
+
+    @GetMapping("/airline/{airlineId}")
+    @Operation(
+            summary = "Get Meals By Airline",
+            description = "Retrieves meals belonging to a specific airline."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Meals retrieved successfully")
+    })
+    public ResponseEntity<List<MealResponse>> getMealsByAirlineId(
+            @RequestHeader("X-Airline-Id") Long airlineId
+    ) {
+        return ResponseEntity.ok(
+                mealService.getMealsByAirlineId(airlineId)
+        );
+    }
+
+    @GetMapping("/ancillary/{ancillaryId}")
+    @Operation(
+            summary = "Get Meals By Ancillary",
+            description = "Retrieves meals associated with an ancillary catalog item."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Meals retrieved successfully")
+    })
+    public ResponseEntity<List<MealResponse>> getMealsByAncillaryId(
+            @RequestHeader("X-Ancillary-Id") Long ancillaryId
+    ) {
+        return ResponseEntity.ok(
+                mealService.getMealsByAncillaryId(ancillaryId)
+        );
+    }
+
+    @GetMapping("/airline/{airlineId}/available")
+    @Operation(
+            summary = "Get Available Meals",
+            description = "Retrieves active and available meals for an airline."
+    )
+    @ApiResponse(responseCode = "200", description = "Available meals retrieved successfully")
+    public ResponseEntity<List<MealResponse>> getAvailableMeals(
+            @RequestHeader("X-Airline-Id")  Long airlineId
+    ) {
+        return ResponseEntity.ok(
+                mealService.getAvailableMeals(airlineId)
+        );
+    }
+
+    @PatchMapping("/{id}/activate")
+    @Operation(
+            summary = "Activate Meal",
+            description = "Activates a meal catalog item."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Meal activated successfully"),
+            @ApiResponse(responseCode = "404", description = "Meal not found")
+    })
+    public ResponseEntity<Void> activateMeal(
+            @PathVariable Long id
+    ) {
+        mealService.activateMeal(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/deactivate")
+    @Operation(
+            summary = "Deactivate Meal",
+            description = "Deactivates a meal catalog item."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Meal deactivated successfully"),
+            @ApiResponse(responseCode = "404", description = "Meal not found")
+    })
+    public ResponseEntity<Void> deactivateMeal(
+            @PathVariable Long id
+    ) {
+        mealService.deactivateMeal(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Delete Meal",
+            description = "Deletes a meal catalog item by its ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Meal deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Meal not found")
+    })
+    public ResponseEntity<Void> deleteMeal(
+            @PathVariable Long id
+    ) {
+        mealService.deleteMeal(id);
+        return ResponseEntity.noContent().build();
     }
 }
