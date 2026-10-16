@@ -20,6 +20,7 @@ public class MealRequest {
     @NotNull
     private Long ancillaryId;
 
+
     @NotBlank
     @Size(max = 50)
     private String code;

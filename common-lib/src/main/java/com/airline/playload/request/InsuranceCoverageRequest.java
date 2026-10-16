@@ -23,6 +23,8 @@ public class InsuranceCoverageRequest {
     private String name;
 
     private String description;
+
+    @NotNull(message = "Coverage amount is required")
     @PositiveOrZero(message = "Coverage amount must be positive or zero")
     private Double coverageAmount;
 

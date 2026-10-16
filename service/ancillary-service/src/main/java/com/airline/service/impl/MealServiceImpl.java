@@ -2,14 +2,18 @@ package com.airline.service.impl;
 
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.AncillaryMapper;
+import com.airline.mapper.InsuranceConverageMapper;
 import com.airline.mapper.MealMapper;
 import com.airline.model.Ancillary;
+import com.airline.model.InsuranceCoverage;
 import com.airline.model.Meal;
 import com.airline.playload.request.MealRequest;
 import com.airline.playload.response.AirlineResponse;
 import com.airline.playload.response.AncillaryResponse;
+import com.airline.playload.response.InsuranceConverageResponse;
 import com.airline.playload.response.MealResponse;
 import com.airline.repository.AncillaryRepository;
+import com.airline.repository.InsuranceCoverageRepository;
 import com.airline.repository.MealRepository;
 import com.airline.service.MealService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class MealServiceImpl implements MealService {
 
     private final MealRepository mealRepository;
     private final AncillaryRepository ancillaryRepository;
+    private final InsuranceCoverageRepository insuranceCoverageRepository;
 
     @Override
     public MealResponse createMeal(MealRequest request) {
@@ -45,8 +50,16 @@ public class MealServiceImpl implements MealService {
 
         Meal savedMeal = mealRepository.save(meal);
 
+        // TODo:
+        List<InsuranceCoverage> converageResponses =
+                insuranceCoverageRepository.findByAncillaryId(meal.getId());
+        List<InsuranceConverageResponse> responses = converageResponses
+                .stream()
+                .map(InsuranceConverageMapper::toResponse)
+                .toList();
+
         AncillaryResponse ancillaryResponse = ancillary != null
-                ? AncillaryMapper.toResponse(ancillary, null)
+                ? AncillaryMapper.toResponse(ancillary, responses)
                 : null;
 
         // Meal stores airlineId, not an Airline entity.
@@ -103,8 +116,15 @@ public class MealServiceImpl implements MealService {
                         )
                 );
 
+        // TODO
+        List<InsuranceCoverage> converageResponses =
+                insuranceCoverageRepository.findByAncillaryId(meal.getId());
+        List<InsuranceConverageResponse> responses = converageResponses
+                .stream()
+                .map(InsuranceConverageMapper::toResponse)
+                .toList();
         AncillaryResponse ancillaryResponse = meal.getAncillary() != null
-                ? AncillaryMapper.toResponse(meal.getAncillary(), null)
+                ? AncillaryMapper.toResponse(meal.getAncillary(), responses)
                 : null;
 
         // Fetch through your airline service/client if airline details are required.

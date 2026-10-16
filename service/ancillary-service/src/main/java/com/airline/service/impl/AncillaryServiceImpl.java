@@ -2,10 +2,14 @@ package com.airline.service.impl;
 
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.AncillaryMapper;
+import com.airline.mapper.InsuranceConverageMapper;
 import com.airline.model.Ancillary;
+import com.airline.model.InsuranceCoverage;
 import com.airline.playload.request.AncillaryRequest;
 import com.airline.playload.response.AncillaryResponse;
+import com.airline.playload.response.InsuranceConverageResponse;
 import com.airline.repository.AncillaryRepository;
+import com.airline.repository.InsuranceCoverageRepository;
 import com.airline.service.AncillaryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +25,7 @@ import java.util.stream.Collectors;
 public class AncillaryServiceImpl implements AncillaryService {
 
     private final AncillaryRepository ancillaryRepository;
+    private final InsuranceCoverageRepository insuranceCoverageRepository;
 
     @Override
     public AncillaryResponse createAncillary(Long airlineId, AncillaryRequest request) {
@@ -32,7 +37,14 @@ public class AncillaryServiceImpl implements AncillaryService {
 
         Ancillary savedAncillary = ancillaryRepository.save(ancillary);
 
-        return AncillaryMapper.toResponse(savedAncillary,null);
+        List<InsuranceCoverage> converageResponses =
+                insuranceCoverageRepository.findByAncillaryId(ancillary.getId());
+        List<InsuranceConverageResponse> responses = converageResponses
+                .stream()
+                .map(InsuranceConverageMapper::toResponse)
+                .toList();
+
+        return AncillaryMapper.toResponse(savedAncillary,responses);
     }
 
     @Override
@@ -40,18 +52,28 @@ public class AncillaryServiceImpl implements AncillaryService {
 
         Ancillary ancillary = ancillaryRepository.findById(id).orElseThrow(() -> new Exception("Not Found"));
 
-        // toDo: fetch insurance coverages by ancillary
-        return AncillaryMapper.toResponse(ancillary, null);
+        List<InsuranceCoverage> converageResponses =
+                insuranceCoverageRepository.findByAncillaryId(ancillary.getId());
+        List<InsuranceConverageResponse> responses = converageResponses
+                .stream()
+                .map(InsuranceConverageMapper::toResponse)
+                .toList();
+        return AncillaryMapper.toResponse(ancillary, responses);
     }
 
     @Override
     public List<AncillaryResponse> getAirlineId(Long id) {
-        return ancillaryRepository.findById(id)
+        return ancillaryRepository.findByAirlineId(id)
                 .stream()
                 .map(
                         ancillary -> {
-//                          ToDo:  fetch insurance coverages by ancillary
-                            return AncillaryMapper.toResponse(ancillary,null);
+                            List<InsuranceCoverage> converageResponses =
+                                    insuranceCoverageRepository.findByAncillaryId(ancillary.getId());
+                            List<InsuranceConverageResponse> responses = converageResponses
+                                    .stream()
+                                    .map(InsuranceConverageMapper::toResponse)
+                                    .toList();
+                            return AncillaryMapper.toResponse(ancillary,responses);
                         }
                 )
                 .collect(Collectors.toList());
@@ -81,8 +103,14 @@ public class AncillaryServiceImpl implements AncillaryService {
         Ancillary updatedAncillary =
                 ancillaryRepository.save(ancillary);
 
+        List<InsuranceCoverage> converageResponses =
+                insuranceCoverageRepository.findByAncillaryId(ancillary.getId());
+        List<InsuranceConverageResponse> responses = converageResponses
+                .stream()
+                .map(InsuranceConverageMapper::toResponse)
+                .toList();
         // Convert entity to response DTO
-        return AncillaryMapper.toResponse(updatedAncillary, null);
+        return AncillaryMapper.toResponse(updatedAncillary, responses);
     }
 
 

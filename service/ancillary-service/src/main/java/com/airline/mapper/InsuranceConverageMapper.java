@@ -24,6 +24,7 @@ public class InsuranceConverageMapper {
                 .description(request.getDescription())
                 .isFlat(request.getIsFlat() !=  null ? request.getIsFlat() : true)
                 .claimCondition(request.getClaimCondition())
+                .coverageAmount(request.getCoverageAmount())
                 .displayOrder(request.getDisplayOrder())
                 .emergencyContact(request.getEmergencyContact())
                 .active(request.getActive() != null ? request.getActive() : true)

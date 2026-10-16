@@ -94,17 +94,15 @@ public class InsuranceCoverageServiceImpl implements InsuranceCoverageService {
 
     @Override
     @Transactional
-    public void deactivateCoverage(Long id) throws Exception {
+    public void deactivateCoverage(Long id) {
 
         InsuranceCoverage coverage = insuranceCoverageRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Insurance coverage not found with id: " + id
-                        )
-                );
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Insurance coverage not found with id: " + id
+                ));
 
-        if (!coverage.getActive()) {
-            throw new Exception(
+        if (Boolean.FALSE.equals(coverage.getActive())) {
+            throw new IllegalStateException(
                     "Insurance coverage is already deactivated"
             );
         }
@@ -113,17 +111,17 @@ public class InsuranceCoverageServiceImpl implements InsuranceCoverageService {
     }
 
     @Override
-    public void activateCoverage(Long id) throws Exception {
-        InsuranceCoverage coverage = insuranceCoverageRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Insurance coverage not found with id: " + id
-                        )
-                );
+    @Transactional
+    public void activateCoverage(Long id) {
 
-        if (!coverage.getActive()) {
-            throw new Exception(
-                    "Insurance coverage is already deactivated"
+        InsuranceCoverage coverage = insuranceCoverageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Insurance coverage not found with id: " + id
+                ));
+
+        if (Boolean.TRUE.equals(coverage.getActive())) {
+            throw new IllegalStateException(
+                    "Insurance coverage is already activated"
             );
         }
 
