@@ -17,6 +17,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
         <module name="flight-ops-service" />
+        <module name="Location-Service" />
+        <module name="booking-service" />
         <module name="seat-service" />
         <module name="user-service" />
         <module name="airline-service" />
@@ -34,6 +36,7 @@
       <module name="Location-Service" options="-parameters" />
       <module name="airline-service" options="-parameters" />
       <module name="ancillary-service" options="-parameters" />
+      <module name="booking-service" options="-parameters" />
       <module name="common-lib" options="-parameters" />
       <module name="flight-ops-service" options="-parameters" />
       <module name="pricing-service" options="-parameters" />

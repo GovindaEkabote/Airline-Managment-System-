@@ -1,0 +1,22 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: booking-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/airline_booking_db
+    username: root
+    password: Govinda@1997
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+  springdoc:
+    packagesToScan: com.airline.controller
+
