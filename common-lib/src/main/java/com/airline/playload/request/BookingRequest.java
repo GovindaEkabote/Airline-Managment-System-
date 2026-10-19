@@ -25,7 +25,6 @@ public class BookingRequest {
     private Long flightId;
 
     @NotNull(message = "Flight instance ID is required")
-    @Positive(message = "Flight instance ID must be positive")
     private Long flightInstanceId;
 
     @NotNull(message = "Fare ID is required")

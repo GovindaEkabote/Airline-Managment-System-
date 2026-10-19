@@ -12,7 +12,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -78,9 +80,7 @@ public class Booking {
     @Builder.Default
     @OneToMany(
             mappedBy = "booking",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
+            cascade = CascadeType.ALL
     )
     private Set<Passenger> passengers = new HashSet<>();
 
@@ -95,7 +95,7 @@ public class Booking {
             )
     )
     @Column(name = "seat_instance_id", nullable = false)
-    private Set<Long> seatInstanceIds = new HashSet<>();
+    private List<Long> seatInstanceIds = new ArrayList<>();
 
     @Builder.Default
     @ElementCollection

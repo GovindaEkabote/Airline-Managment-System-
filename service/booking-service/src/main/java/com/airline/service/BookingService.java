@@ -1,5 +1,6 @@
 package com.airline.service;
 
+import com.airline.enums.BookingStatus;
 import com.airline.playload.request.BookingRequest;
 import com.airline.playload.response.BookingResponse;
 
@@ -13,8 +14,8 @@ public interface BookingService {
     List<BookingResponse> getAllBookingsByAirline(
             Long airlineId,
             String searchQuery,
-            Long flightInstanceId,
-            String sortDirection
+            BookingStatus status,
+            Long flightInstanceId
     );
     List<BookingResponse> getBookingsByUser(Long userId);
     BookingResponse cancleBooking(Long id);

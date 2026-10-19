@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByUserId(Long userId);
-    long coundByFlightInstanceId(Long flightInstanceId);
+
 
 
     @Query("""
@@ -49,6 +49,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     );
 
 
-    boolean existByBookingReference(String bookingReference);
+
+    boolean existsByBookingReference(String bookingReference);
 
 }

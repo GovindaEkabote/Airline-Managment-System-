@@ -44,7 +44,7 @@ public class BookingResponse {
     private Instant lastModified;
 
     // Passengers and seats
-    private Set<PassengerResponse> passengers;
+    private List<PassengerResponse> passengers;
     private List<SeatInstanceResponse> seatInstances;
     private Integer totalPassengers;
 
@@ -58,7 +58,7 @@ public class BookingResponse {
     private List<FlightMealResponse> flightMealResponses;
 
     // Ticket details
-    private Set<TicketResponse> tickets;
+    private List<TicketResponse> tickets;
 
     // Fare and pricing
     private FareResponse fareResponse;
@@ -74,7 +74,7 @@ public class BookingResponse {
 
 
     private LocalDateTime departureTime;
-    private LocalDateTime arricalTime;
+    private LocalDateTime arrivalTime;
 
     private Boolean isUpcoming;
     private Boolean isPast;
