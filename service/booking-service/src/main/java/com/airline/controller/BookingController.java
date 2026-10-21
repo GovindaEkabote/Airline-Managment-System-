@@ -1,5 +1,6 @@
 package com.airline.controller;
 
+import com.airline.enums.BookingStatus;
 import com.airline.playload.request.BookingRequest;
 import com.airline.playload.response.BookingResponse;
 import com.airline.service.BookingService;
@@ -129,4 +130,16 @@ public class BookingController {
        bookingService.deleteBooking(id);
     }
 
+    @GetMapping("/airline")
+    public ResponseEntity<List<BookingResponse>> getAllBookingsByAirline(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false)BookingStatus status,
+            @RequestParam(required = false) Long flightInstanceId,
+            @RequestHeader("X-Airline_Id") Long airlineId
+            ){
+            List<BookingResponse> bookingResponses = bookingService
+                    .getAllBookingsByAirline(airlineId,search,status,flightInstanceId);
+
+            return ResponseEntity.ok(bookingResponses);
+    }
 }

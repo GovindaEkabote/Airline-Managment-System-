@@ -30,5 +30,6 @@
         <module>seat-service</module>
         <module>ancillary-service</module>
         <module> booking-service</module>
+        <module>payment-service</module>
     </modules>
 </project>
