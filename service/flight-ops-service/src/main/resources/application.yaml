@@ -1,5 +1,5 @@
 server:
-  port: 8084
+  port: 8089
 
 spring:
   application:
@@ -20,3 +20,9 @@ spring:
     packagesToScan: com.airline.controller
 
 
+eureka:
+  client:
+    registry-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true

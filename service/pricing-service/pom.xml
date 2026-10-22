@@ -11,6 +11,10 @@
 	<artifactId>pricing-service</artifactId>
 	<dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.airline</groupId>
             <artifactId>common-lib</artifactId>
             <version>${project.version}</version>

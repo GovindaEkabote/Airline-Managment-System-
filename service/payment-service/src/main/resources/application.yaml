@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8085
 
 spring:
   application:
@@ -23,3 +23,11 @@ razorpay:
   api:
     key: ${RAZORPAY_API_KEY}
     secret: ${RAZORPAY_API_SECRET}
+
+
+eureka:
+  client:
+    registry-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true

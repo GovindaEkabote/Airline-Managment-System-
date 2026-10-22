@@ -1,5 +1,7 @@
 package com.airline.service.impl;
 
+import com.airline.config.feignclient.AirlineClient;
+import com.airline.config.feignclient.AirportClient;
 import com.airline.enums.FlightStatus;
 import com.airline.exception.DuplicateResourceException;
 import com.airline.exception.ResourceNotFoundException;
@@ -27,6 +29,8 @@ import java.util.List;
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
+    private final AirlineClient airlineClient;
+    private final AirportClient airportClient;
 
     @Override
     public FlightResponse createFlight(
@@ -107,22 +111,10 @@ public class FlightServiceImpl implements FlightService {
 
     private FlightResponse convertIntoFlightResponse(Flight flight){
 
-        AircraftResponse aircraftId =
-                AircraftResponse.builder()
-                        .id(flight.getAircraftId())
-                        .build();
-        AirlineResponse airlineId =
-                AirlineResponse.builder()
-                        .id(flight.getAirlineId())
-                        .build();
-        AirportResponse departureAirportId =
-                AirportResponse.builder()
-                        .id(flight.getDepartureAirportId())
-                        .build();
-        AirportResponse arrivalAirportId =
-                AirportResponse.builder()
-                        .id(flight.getArrivalAirportId())
-                        .build();
+        AircraftResponse aircraftId =airlineClient.getAircraftById(flight.getAircraftId());
+        AirlineResponse airlineId =airlineClient.getAirlineById(flight.getAirlineId());
+        AirportResponse departureAirportId =airportClient.getAirport(flight.getDepartureAirportId());
+        AirportResponse arrivalAirportId =airportClient.getAirport(flight.getArrivalAirportId());
         return FlightMapper.toResponse(
                 flight,
                 aircraftId,

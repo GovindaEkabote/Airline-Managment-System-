@@ -1,9 +1,9 @@
 server:
-  port: 8082
+  port: 8088
 
 spring:
   application:
-    name: Location-Service
+    name: User-Service
 
   datasource:
     url: jdbc:mysql://localhost:3306/airline_user_db
@@ -21,3 +21,9 @@ spring:
     packagesToScan: com.airline.controller
 
 
+eureka:
+  client:
+    registry-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true

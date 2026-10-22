@@ -133,7 +133,7 @@ public class BookingMapper {
                 // Payment and fare details
                 .paymentStatus(
                         paymentDTO != null
-                                ? paymentDTO.getStatus()
+                                ? paymentDTO.getPaymentStatus()
                                 : null
                 )
                 .fareResponse(fareResponse)

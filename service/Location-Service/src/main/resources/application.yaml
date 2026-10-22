@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8084
 
 spring:
   application:
@@ -16,8 +16,12 @@ spring:
       ddl-auto: update
     show-sql: true
 
-
   springdoc:
     packagesToScan: com.airline.controller
 
-
+eureka:
+  client:
+    registry-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
