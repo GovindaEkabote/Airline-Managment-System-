@@ -1,5 +1,7 @@
 package com.airline.service.impl;
 
+import com.airline.config.feignclient.AirlineClient;
+import com.airline.config.feignclient.AirportClient;
 import com.airline.enums.FlightStatus;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.FlightScheduleMapper;
@@ -30,6 +32,8 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
     private final FlightScheduleRepository flightScheduleRepository;
     private final FlightRepository flightRepository;
     private final FlightInstanceService flightInstanceService;
+    private final AirlineClient airlineClient;
+    private final AirportClient airportClient;
 
     @Override
     public FlightScheduleResponse createFlightSchedule(
@@ -204,13 +208,10 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
 
     private FlightScheduleResponse convertToFlightScheduleResponse(
             FlightSchedule schedule) {
-//        todo service to service communication...
-        AirportResponse departureAirport = AirportResponse.builder()
-                .id(schedule.getDepartureAirportId())
-                .build();
-        AirportResponse arrivalAirport = AirportResponse.builder()
-                .id(schedule.getArrivalAirportId())
-                .build();
+        AirportResponse departureAirport =
+                airportClient.getAirport(schedule.getDepartureAirportId());
+        AirportResponse arrivalAirport =
+                airportClient.getAirport(schedule.getArrivalAirportId());
 
         return FlightScheduleMapper.toResponse(
                 schedule,

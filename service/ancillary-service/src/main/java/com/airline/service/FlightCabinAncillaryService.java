@@ -5,6 +5,7 @@ import com.airline.playload.request.FlightCabinAncillaryRequest;
 import com.airline.playload.response.FlightCabinAncillaryResponse;
 
 import java.util.List;
+import java.util.Set;
 
 public interface FlightCabinAncillaryService {
 
@@ -24,6 +25,6 @@ public interface FlightCabinAncillaryService {
     );
     FlightCabinAncillaryResponse update(Long id, FlightCabinAncillaryRequest request);
     void  delete(Long id);
-    Double calculateAncillaryPrice(List<Long> ancillaryIds);
+    Double calculateAncillaryPrice(Set<Long> ancillaryIds);
 
 }

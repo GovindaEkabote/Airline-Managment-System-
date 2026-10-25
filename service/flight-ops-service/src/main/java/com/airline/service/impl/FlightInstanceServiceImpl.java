@@ -1,5 +1,7 @@
 package com.airline.service.impl;
 
+import com.airline.config.feignclient.AirlineClient;
+import com.airline.config.feignclient.AirportClient;
 import com.airline.enums.FlightStatus;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.FlightInstanceMapper;
@@ -26,6 +28,8 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     private final FlightInstanceRepository flightInstanceRepository;
     private final FlightRepository flightRepository;
+    private final AirlineClient airlineClient;
+    private final AirportClient airportClient;
 
     @Override
     public FlightInstanceResponse createFlightInstance(
@@ -47,18 +51,8 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
                     "Flight does not belong to the specified airline"
             );
         }
-        /*
-         * TEMPORARY:
-         * Replace this with AircraftService/AircraftRepository lookup.
-         *
-         * Ideally:
-         * Aircraft aircraft = aircraftRepository.findById(flight.getAircraftId())...
-         */
-        AircraftResponse aircraftResponse =
-                AircraftResponse.builder()
-                        .id(flight.getAircraftId())
-                        .totalSeats(90)
-                        .build();
+
+        AircraftResponse aircraftResponse =airlineClient.getAircraftById(flight.getAircraftId());
 
         FlightInstance flightInstance =
                 FlightInstanceMapper.toEntity(
@@ -76,6 +70,8 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
 
         FlightInstance savedFlightInstance =
                 flightInstanceRepository.save(flightInstance);
+
+        // publish kafka event,
 
         return convertIntoFlightInstanceResponse(
                 savedFlightInstance
@@ -192,24 +188,15 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
             FlightInstance flightInstance) {
 
         AirlineResponse airlineResponse =
-                AirlineResponse.builder()
-                        .id(flightInstance.getAirlineId())
-                        .build();
+                airlineClient.getAirlineById(flightInstance.getAirlineId());
 
-        AirportResponse departureAirportResponse =
-                AirportResponse.builder()
-                        .id(flightInstance.getDepartureAirportId())
-                        .build();
+        AirportResponse departureAirportResponse = airportClient.getAirport(flightInstance.getDepartureAirportId());
 
         AirportResponse arrivalAirportResponse =
-                AirportResponse.builder()
-                        .id(flightInstance.getArrivalAirportId())
-                        .build();
+                airportClient.getAirport(flightInstance.getArrivalAirportId());
 
         AircraftResponse aircraftResponse =
-                AircraftResponse.builder()
-                        .id(flightInstance.getFlight().getAircraftId())
-                        .build();
+                airlineClient.getAircraftById(flightInstance.getFlight().getAircraftId());
 
         FlightResponse flightResponse =
                 FlightMapper.toResponse(

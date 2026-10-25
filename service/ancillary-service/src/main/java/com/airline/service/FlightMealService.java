@@ -4,6 +4,7 @@ import com.airline.playload.request.FlightMealRequest;
 import com.airline.playload.response.FlightMealResponse;
 
 import java.util.List;
+import java.util.Set;
 
 public interface FlightMealService {
 
@@ -14,5 +15,5 @@ public interface FlightMealService {
     FlightMealResponse updateFlightMeal(Long id , FlightMealRequest request);
     void deleteFlightMeal(Long id);
     FlightMealResponse updateFlightMealAvailability(Long id,Boolean availability);
-    Double calculateMealPrice(List<Long> meadIds);
+    Double calculateMealPrice(Set<Long> meadIds);
 }

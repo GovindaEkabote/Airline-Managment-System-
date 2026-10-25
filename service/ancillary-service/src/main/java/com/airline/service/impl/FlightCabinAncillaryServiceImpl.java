@@ -1,6 +1,7 @@
 package com.airline.service.impl;
 
 import com.airline.enums.AncillaryType;
+import com.airline.enums.SeatType;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.FlightCabinAncillaryMapper;
 import com.airline.mapper.InsuranceConverageMapper;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,7 +135,7 @@ public class FlightCabinAncillaryServiceImpl implements FlightCabinAncillaryServ
     }
 
     @Override
-    public Double calculateAncillaryPrice(List<Long> ancillaryIds) {
+    public Double calculateAncillaryPrice(Set<Long> ancillaryIds) {
         List<FlightCabinAncillary> ancillaries
                 = flightCabinAncillaryRepository.findAllById(ancillaryIds);
         double totalPrice = 0.0;

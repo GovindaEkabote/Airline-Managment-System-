@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /*
@@ -105,7 +106,7 @@ public class FlightMealServiceImpl implements FlightMealService {
     }
 
     @Override
-    public Double calculateMealPrice(List<Long> meadIds) {
+    public Double calculateMealPrice(Set<Long> meadIds) {
         List<FlightMeal> meals =flightMealRepository.findAllById(meadIds);
         double price = 0.0;
         for (FlightMeal meal:meals){

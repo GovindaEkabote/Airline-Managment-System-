@@ -19,8 +19,8 @@ public interface FlightInstanceRepository extends JpaRepository<FlightInstance, 
                    OR fi.departureAirportId = :departureAirportId)
                 AND (:arrivalAirportId IS NULL 
                    OR fi.arrivalAirportId = :arrivalAirportId)
-                AND (:flight IS NULL 
-                   OR fi.flight = :flight)
+                AND (:flightId IS NULL
+                  OR fi.flight.id = :flightId)
                 AND (:onDate IS NULL 
                    OR (fi.departureDateTime >= :onDate 
                    AND fi.departureDateTime < :nextDate

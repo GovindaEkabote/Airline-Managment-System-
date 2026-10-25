@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(
@@ -210,7 +211,7 @@ public class FlightMealController {
                     description = "One or more meals not found")
     })
     public ResponseEntity<Double> calculateMealPrice(
-            @RequestBody List<Long> mealIds
+            @RequestBody Set<Long> mealIds
     ) {
         return ResponseEntity.ok(
                 flightMealService.calculateMealPrice(mealIds)

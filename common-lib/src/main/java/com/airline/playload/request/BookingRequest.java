@@ -38,18 +38,18 @@ public class BookingRequest {
     @Valid
     private List<PassengerRequest> passengers;
 
-    @Builder.Default
-    private Set<Long> seatInstanceIds = Set.of();
+
+//    private List<Long> seatInstanceIds;
 
     private List<String> seatNumbers;
 
-    @Builder.Default
+
     private Set<Long> ancillaryIds = Set.of();
 
-    @Builder.Default
+
     private Set<Long> mealIds = Set.of();
 
-    @Builder.Default
+
     private Boolean flexibleTicket = false;
 
     @NotNull(message = "Booking contact information is required")

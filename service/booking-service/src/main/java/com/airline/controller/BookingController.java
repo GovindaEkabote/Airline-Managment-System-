@@ -3,6 +3,7 @@ package com.airline.controller;
 import com.airline.enums.BookingStatus;
 import com.airline.playload.request.BookingRequest;
 import com.airline.playload.response.BookingResponse;
+import com.airline.playload.response.PaymentInitiatResponse;
 import com.airline.service.BookingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,11 +50,11 @@ public class BookingController {
             @ApiResponse(responseCode = "409",
                     description = "Booking already exists")
     })
-    public ResponseEntity<BookingResponse> createBooking(
+    public ResponseEntity<PaymentInitiatResponse> createBooking(
             @RequestParam("X-User-id") Long userId,
             @Valid @RequestBody BookingRequest request
             ){
-                BookingResponse response =
+                PaymentInitiatResponse response =
                         bookingService.createBooking(request,
                                 userId);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);

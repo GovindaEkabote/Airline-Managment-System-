@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(
@@ -160,7 +161,7 @@ public class FlightCabinAncillaryController {
     )
     @Operation(summary = "Calculate Total Ancillary Price")
     public ResponseEntity<Double> calculateAncillaryPrice(
-            @RequestBody List<Long> ancillaryIds) {
+            @RequestBody Set<Long> ancillaryIds) {
 
         return ResponseEntity.ok(
                 flightCabinAncillaryService.calculateAncillaryPrice(
