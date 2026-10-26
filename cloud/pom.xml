@@ -22,7 +22,7 @@
          Modules
          ========================= -->
     <modules>
-<!--        <module>api-gateway</module>-->
+        <module>API-GATEWAY</module>
         <module>service-registry</module>
     </modules>
 </project>

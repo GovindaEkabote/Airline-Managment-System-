@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="service-registry" />
+        <module name="API-GATEWAY" />
         <module name="common-lib" />
       </profile>
       <profile name="Annotation profile for Airline System" enabled="true">
@@ -34,6 +35,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="API-GATEWAY" options="-parameters" />
       <module name="AirlineSystem" options="" />
       <module name="Location-Service" options="-parameters" />
       <module name="airline-service" options="-parameters" />
