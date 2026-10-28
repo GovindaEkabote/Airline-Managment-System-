@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
 
 
-    UserResponse getUserByEmail(String email);
+    UserResponse getUserByEmail(String email) throws Exception;
 
     UserResponse getUserById(Long id);
 

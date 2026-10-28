@@ -1,7 +1,9 @@
 package com.airline.controller;
 
+import com.airline.playload.dto.UserDto;
 import com.airline.playload.response.UpdateUserRequest;
 import com.airline.playload.response.UserResponse;
+import com.airline.service.AuthService;
 import com.airline.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,9 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(
@@ -33,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+
 
 
     // =========================================================
@@ -70,31 +76,22 @@ public class UserController {
     // GET USER BY EMAIL
     // =========================================================
 
-    @GetMapping("/email/{email}")
+
+
+    @GetMapping("/profile")
     @Operation(
-            summary = "Get user by email",
-            description = "Fetch a user using their email address"
+            summary = "Get logged-in user profile",
+            description = "Fetch the profile of the authenticated user"
     )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "User found"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "User not found"
-            )
-    })
-    public ResponseEntity<UserResponse> getUserByEmail(
-            @PathVariable String email
-    ) {
+    public UserResponse getUserProfile(
+            @RequestHeader("X-User-Email") String email) throws Exception {
 
-        log.info("Fetching user with email: {}", email);
+        log.info("Fetching profile for authenticated user: {}", email);
 
-        return ResponseEntity.ok(
-                userService.getUserByEmail(email)
-        );
+        return userService.getUserByEmail(email);
     }
+
+
 
 
     // =========================================================

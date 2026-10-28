@@ -12,5 +12,7 @@ public interface AuthService {
 
     AuthResponse signup(SignupRequest request);
 
+
+
     void logout(String email);
 }

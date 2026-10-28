@@ -3,6 +3,7 @@ package com.airline.enums;
 public enum Roles {
 
     SUPER_ADMIN,
+    SYSTEM_ADMIN,
     ADMIN,
     AIRLINE_OWNER,
     AIRLINE_ADMIN,
