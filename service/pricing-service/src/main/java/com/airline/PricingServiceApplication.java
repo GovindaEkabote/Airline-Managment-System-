@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class PricingServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PricingServiceApplication.class, args);
+
+        SpringApplication.run(PricingServiceApplication.class, args);
+        System.out.println("Pricing Service Started");
 	}
 
 }

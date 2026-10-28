@@ -32,7 +32,7 @@ public class AncillaryController {
     private final AncillaryService ancillaryService;
 
     @PostMapping(
-            value = "/airline/{airlineId}",
+            value = "/airline/{userId}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(
@@ -50,11 +50,11 @@ public class AncillaryController {
                     description = "Ancillary already exists")
     })
     public ResponseEntity<AncillaryResponse> createAncillary(
-            @RequestHeader("X-Airline-id") Long airlineId,
+            @RequestHeader("X-User-id") Long userId,
             @Valid @RequestBody AncillaryRequest request) {
 
         AncillaryResponse response =
-                ancillaryService.createAncillary(airlineId, request);
+                ancillaryService.createAncillary(userId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -76,7 +76,7 @@ public class AncillaryController {
         return ResponseEntity.ok(ancillaryService.getbyId(id));
     }
 
-    @GetMapping("/airline/{airlineId}")
+    @GetMapping("/airline/{userId}")
     @Operation(
             summary = "Get ancillaries by airline",
             description = "Retrieves all ancillary services belonging to an airline."
@@ -88,10 +88,10 @@ public class AncillaryController {
                     description = "Airline not found")
     })
     public ResponseEntity<List<AncillaryResponse>> getAncillariesByAirline(
-            @PathVariable Long airlineId) {
+            @RequestHeader("X-User-Id") Long userId) {
 
         return ResponseEntity.ok(
-                ancillaryService.getAirlineId(airlineId));
+                ancillaryService.getAirlineId(userId));
     }
 
     @PutMapping(

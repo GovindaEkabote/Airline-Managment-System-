@@ -11,7 +11,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class BookingServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BookingServiceApplication.class, args);
+
+        SpringApplication.run(BookingServiceApplication.class, args);
+        System.out.println("Booking Service Started");
 	}
 
 }

@@ -33,9 +33,10 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     @Override
     public FlightInstanceResponse createFlightInstance(
-            Long airlineId,
+            Long userId,
             FlightInstanceRequest request) {
 
+        AirlineResponse airlineResponse= airlineClient.getAirlineByOwnerId(userId);
 
         Flight flight = flightRepository
                 .findById(request.getFlightId())
@@ -46,7 +47,7 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
                                 request.getFlightId()
                         ));
 
-        if (!flight.getAirlineId().equals(airlineId)){
+        if (!flight.getAirlineId().equals(airlineResponse.getId())){
             throw new IllegalArgumentException(
                     "Flight does not belong to the specified airline"
             );
@@ -165,16 +166,17 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     @Override
     public Page<FlightInstanceResponse> getByAirlineId(
-            Long airlineId,
+            Long userId,
             Long departureAirportId,
             Long arrivalAirportId,
             Long flightId,
             LocalDate onDate,
             Pageable pageable) {
+        AirlineResponse airlineResponse= airlineClient.getAirlineByOwnerId(userId);
         LocalDateTime start = onDate != null ? onDate.atStartOfDay() : null;
         LocalDateTime end = onDate != null ? onDate.plusDays(1).atStartOfDay() : null;
         return flightInstanceRepository.findByAirlineId(
-                airlineId,
+                airlineResponse.getId(),
                 departureAirportId,
                 arrivalAirportId,
                 flightId,

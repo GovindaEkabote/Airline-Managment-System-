@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public interface FlightInstanceService {
 
     FlightInstanceResponse createFlightInstance(
-            Long airlineId,
+            Long userId,
             FlightInstanceRequest request
     );
 
@@ -30,7 +30,7 @@ public interface FlightInstanceService {
     void deleteFlightInstance( Long id );
 
     Page<FlightInstanceResponse> getByAirlineId(
-            Long airlineId,
+            Long userId,
             Long departureAirportId,
             Long arrivalAirportId,
             Long flightId,

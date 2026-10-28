@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface SeatMapService {
 
-    SeatMapResponse create(Long airlineId,SeatMapRequest request) throws Exception;  // one map per cabin class
+    SeatMapResponse create(Long userId,SeatMapRequest request) throws Exception;  // one map per cabin class
     SeatMapResponse getSeatMapById(Long id);    // includes seats
     SeatMapResponse getSeatMapCabinClass(Long cabinClassId);
     Page<SeatMapResponse> getByAirlineId(Long airlineId, Pageable pageable);

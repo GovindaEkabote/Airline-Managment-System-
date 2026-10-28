@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -42,9 +43,10 @@ public class MealController {
             @ApiResponse(responseCode = "409", description = "Meal already exists")
     })
     public ResponseEntity<MealResponse> createMeal(
-            @Valid @RequestBody MealRequest request
+            @Valid @RequestBody MealRequest request,
+            @RequestHeader("X-User-Id") Long userId
     ) {
-        MealResponse response = mealService.createMeal(request);
+        MealResponse response = mealService.createMeal(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -62,10 +64,11 @@ public class MealController {
             @ApiResponse(responseCode = "404", description = "Meal or ancillary not found")
     })
     public ResponseEntity<MealResponse> updateMeal(
+            @RequestHeader("X-User-Id") Long userId,
             @PathVariable Long id,
             @Valid @RequestBody MealRequest request
-    ) {
-        return ResponseEntity.ok(mealService.updateMeal(id, request));
+    ) throws AccessDeniedException {
+        return ResponseEntity.ok(mealService.updateMeal(userId, id, request));
     }
 
     @GetMapping("/{id}")
@@ -102,10 +105,10 @@ public class MealController {
             @ApiResponse(responseCode = "200", description = "Meals retrieved successfully")
     })
     public ResponseEntity<List<MealResponse>> getMealsByAirlineId(
-            @RequestHeader("X-Airline-Id") Long airlineId
+            @RequestHeader("X-User-Id") Long userId
     ) {
         return ResponseEntity.ok(
-                mealService.getMealsByAirlineId(airlineId)
+                mealService.getMealsByAirlineId(userId)
         );
     }
 

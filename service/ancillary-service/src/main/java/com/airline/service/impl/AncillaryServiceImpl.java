@@ -1,11 +1,13 @@
 package com.airline.service.impl;
 
+import com.airline.config.feignClient.AirlineClient;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.AncillaryMapper;
 import com.airline.mapper.InsuranceConverageMapper;
 import com.airline.model.Ancillary;
 import com.airline.model.InsuranceCoverage;
 import com.airline.playload.request.AncillaryRequest;
+import com.airline.playload.response.AirlineResponse;
 import com.airline.playload.response.AncillaryResponse;
 import com.airline.playload.response.InsuranceConverageResponse;
 import com.airline.repository.AncillaryRepository;
@@ -26,14 +28,25 @@ public class AncillaryServiceImpl implements AncillaryService {
 
     private final AncillaryRepository ancillaryRepository;
     private final InsuranceCoverageRepository insuranceCoverageRepository;
+    private final AirlineClient airlineClient;
 
     @Override
     public AncillaryResponse createAncillary(Long airlineId, AncillaryRequest request) {
 
+
         if (request == null){
             throw new IllegalArgumentException("Ancillary request must not be null");
         }
-        Ancillary ancillary = AncillaryMapper.toEntity(request, airlineId);
+        AirlineResponse airlineResponse =airlineClient.getAirlineByOwnerId(airlineId);
+
+        if (airlineResponse == null) {
+            throw new IllegalArgumentException(
+                    "Airline not found for owner ID: " + airlineId
+            );
+        }
+        Ancillary ancillary = AncillaryMapper.toEntity(
+                request,
+                airlineResponse.getOwnerId());
 
         Ancillary savedAncillary = ancillaryRepository.save(ancillary);
 
@@ -62,8 +75,16 @@ public class AncillaryServiceImpl implements AncillaryService {
     }
 
     @Override
-    public List<AncillaryResponse> getAirlineId(Long id) {
-        return ancillaryRepository.findByAirlineId(id)
+    public List<AncillaryResponse> getAirlineId(Long userId) {
+        AirlineResponse airlineResponse =airlineClient.getAirlineByOwnerId(userId);
+
+        if (airlineResponse == null) {
+            throw new IllegalArgumentException(
+                    "Airline not found for owner ID: " + userId
+            );
+        }
+
+        return ancillaryRepository.findByAirlineId(airlineResponse.getId())
                 .stream()
                 .map(
                         ancillary -> {

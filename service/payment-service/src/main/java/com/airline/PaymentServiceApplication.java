@@ -9,7 +9,7 @@ public class PaymentServiceApplication {
 	public static void main(String[] args) {
 
         SpringApplication.run(PaymentServiceApplication.class, args);
-        System.out.println("PaymentServiceApplication Started..");
+        System.out.println("Payment Service pplication Started..");
 	}
 
 }

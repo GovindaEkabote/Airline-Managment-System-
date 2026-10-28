@@ -57,13 +57,13 @@ public class FlightInstanceController {
             )
     })
     public ResponseEntity<FlightInstanceResponse> createFlightInstance(
-            @RequestHeader("airlineId") Long airlineId,
+            @RequestHeader("X-User-Id") Long userId,
             @RequestBody FlightInstanceRequest request
     ) {
 
         FlightInstanceResponse response =
                 flightInstanceService.createFlightInstance(
-                        airlineId,
+                        userId,
                         request
                 );
 
@@ -202,7 +202,7 @@ public class FlightInstanceController {
             )
     })
     public ResponseEntity<Page<FlightInstanceResponse>> getByAirlineId(
-            @RequestHeader("airlineId") Long airlineId,
+            @RequestHeader("X-User-Id") Long airlineId,
 
             @RequestParam(required = false)
             Long departureAirportId,

@@ -16,7 +16,8 @@ public final class MealMapper {
     // CREATE
     public static Meal toEntity(
             MealRequest request,
-            Ancillary ancillary) {
+            Ancillary ancillary,
+            Long userId) {
 
         if (request == null) {
             return null;
@@ -25,7 +26,7 @@ public final class MealMapper {
         return Meal.builder()
                 .ancillary(ancillary)
                 .code(request.getCode())
-                .airlineId(request.getAirlineId())
+                .airlineId(userId)
                 .name(request.getName())
                 .description(request.getDescription())
                 .mealType(request.getMealType())

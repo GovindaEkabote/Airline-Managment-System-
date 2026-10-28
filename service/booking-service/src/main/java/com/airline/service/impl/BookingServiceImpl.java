@@ -32,20 +32,18 @@ import java.util.stream.Collectors;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
-    private final PassengerService passengerService;
-    private final TicketService ticketService;
-    private final AirlineClient airlineClient;
     private final FlightClient flightClient;
     private final AncillaryClient ancillaryClient;
-    private final PriceClient priceClient;
     private final SeatClient seatClient;
     private final CalculatesFareTotal calculatesFareTotal;
     private final PaymentClient paymentClient;
+    private final AirlineClient airlineClient;
 
 
     @Override
     @Transactional
     public PaymentInitiatResponse createBooking(BookingRequest request, Long userId) {
+
 
         // Step 1: Generate unique booking reference
         String bookingReference = generateBookingReference();
@@ -167,10 +165,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingResponse> getAllBookingsByAirline(Long airlineId, String searchQuery, BookingStatus status, Long flightInstanceId) {
+    public List<BookingResponse> getAllBookingsByAirline(Long userId, String searchQuery, BookingStatus status, Long flightInstanceId) {
+        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
         List<Booking>bookings = bookingRepository
                 .findByAirlineWithFilter(
-                        airlineId,
+                        airlineResponse.getId(),
                         searchQuery,
                         status,
                         flightInstanceId

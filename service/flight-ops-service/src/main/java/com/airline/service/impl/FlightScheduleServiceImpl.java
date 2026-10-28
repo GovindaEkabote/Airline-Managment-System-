@@ -37,8 +37,10 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
 
     @Override
     public FlightScheduleResponse createFlightSchedule(
-            Long airlineId,
+            Long userId,
             FlightScheduleRequest request) {
+
+        AirlineResponse response = airlineClient.getAirlineByOwnerId(userId);
 
         Flight flight = flightRepository.findById(request.getFlightId())
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -47,7 +49,7 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
                         request.getFlightId()
                 ));
 
-        if (!flight.getAirlineId().equals(airlineId)) {
+        if (!flight.getAirlineId().equals(response.getId())) {
             throw new IllegalArgumentException(
                     "Flight does not belong to the specified airline"
             );
@@ -106,7 +108,7 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
             );
 
             flightInstanceService.createFlightInstance(
-                    airlineId,
+                    response.getId(),
                     flightInstanceRequest
             );
         }
@@ -128,8 +130,9 @@ public class FlightScheduleServiceImpl implements FlightScheduleService {
     }
 
     @Override
-    public List<FlightScheduleResponse> getFlightSchedulesByAirline(Long airlineId) {
-        List<FlightSchedule> flightSchedules = flightScheduleRepository.findByAirlineId(airlineId);
+    public List<FlightScheduleResponse> getFlightSchedulesByAirline(Long userId) {
+        AirlineResponse response = airlineClient.getAirlineByOwnerId(userId);
+        List<FlightSchedule> flightSchedules = flightScheduleRepository.findByAirlineId(response.getId());
         return flightSchedules.stream()
                 .map(this::convertToFlightScheduleResponse)
                 .collect(Collectors.toList()

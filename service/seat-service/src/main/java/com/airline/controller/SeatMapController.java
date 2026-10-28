@@ -54,10 +54,10 @@ public class SeatMapController {
             )
     })
     public ResponseEntity<SeatMapResponse> createSeatMap(
-            @RequestHeader("X-Airline-Id") Long airlineId,
+            @RequestHeader("X-User-Id") Long userId,
             @Valid @RequestBody SeatMapRequest request
     ) throws Exception {
-        SeatMapResponse seatMapResponse = seatMapService.create(airlineId, request);
+        SeatMapResponse seatMapResponse = seatMapService.create(userId, request);
         return ResponseEntity
                 .status(201)
                 .body(seatMapResponse);

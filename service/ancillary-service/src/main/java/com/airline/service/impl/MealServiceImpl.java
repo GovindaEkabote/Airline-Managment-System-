@@ -1,5 +1,6 @@
 package com.airline.service.impl;
 
+import com.airline.config.feignClient.AirlineClient;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.AncillaryMapper;
 import com.airline.mapper.InsuranceConverageMapper;
@@ -20,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +34,24 @@ public class MealServiceImpl implements MealService {
     private final MealRepository mealRepository;
     private final AncillaryRepository ancillaryRepository;
     private final InsuranceCoverageRepository insuranceCoverageRepository;
+    private final AirlineClient airlineClient;
 
     @Override
-    public MealResponse createMeal(MealRequest request) {
+    public MealResponse createMeal(MealRequest request, Long userId) {
+
+        if (request == null) {
+            throw new IllegalArgumentException(
+                    "Meal request must not be null"
+            );
+        }
+
+        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
+
+        if (airlineResponse == null) {
+            throw new ResourceNotFoundException(
+                    "Airline not found for owner ID: " + userId
+            );
+        }
 
         Ancillary ancillary = null;
 
@@ -46,7 +64,7 @@ public class MealServiceImpl implements MealService {
                     );
         }
 
-        Meal meal = MealMapper.toEntity(request, ancillary);
+        Meal meal = MealMapper.toEntity(request, ancillary,airlineResponse.getOwnerId());
 
         Meal savedMeal = mealRepository.save(meal);
 
@@ -62,9 +80,6 @@ public class MealServiceImpl implements MealService {
                 ? AncillaryMapper.toResponse(ancillary, responses)
                 : null;
 
-        // Meal stores airlineId, not an Airline entity.
-        // Fetch AirlineResponse through your airline service/client if required.
-        AirlineResponse airlineResponse = null;
 
         return MealMapper.toResponse(
                 savedMeal,
@@ -74,7 +89,24 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public MealResponse updateMeal(Long id, MealRequest request) {
+    public MealResponse updateMeal(Long userId, Long id, MealRequest request) throws AccessDeniedException {
+
+        if (request == null) {
+            throw new IllegalArgumentException(
+                    "Meal request must not be null"
+            );
+        }
+
+        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
+
+        if (airlineResponse == null) {
+            throw new ResourceNotFoundException(
+                    "Airline not found for owner ID: " + userId
+            );
+        }
+
+        Long userIds = airlineResponse.getId();
+
         Meal meal = mealRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
@@ -82,29 +114,47 @@ public class MealServiceImpl implements MealService {
                         )
                 );
 
+        // Verify ownership before updating
+        if (!Objects.equals(meal.getAirlineId(), userIds)) {
+            throw new AccessDeniedException(
+                    "You are not authorized to update this meal"
+            );
+        }
+
         // Preserve the existing ancillary unless a new ID is provided.
         Ancillary ancillary = meal.getAncillary();
 
         if (request.getAncillaryId() != null) {
-            ancillary = ancillaryRepository.findById(request.getAncillaryId())
+            ancillary = ancillaryRepository
+                    .findById(request.getAncillaryId())
                     .orElseThrow(() ->
                             new ResourceNotFoundException(
                                     "Ancillary not found with ID: "
                                             + request.getAncillaryId()
                             )
                     );
+            // Ensure ancillary belongs to the same airline
+            if (!Objects.equals(
+                    ancillary.getAirlineId(), userIds)) {
+                throw new AccessDeniedException(
+                        "This ancillary does not belong to your airline"
+                );
+            }
         }
 
         MealMapper.updateEntity(meal, request, ancillary);
+        // Never change ownership based on request data
+        meal.setAirlineId(userIds);
         Meal saved = mealRepository.save(meal);
         AncillaryResponse ancillaryResponse = ancillary != null
                 ? AncillaryMapper.toResponse(ancillary, null)
                 : null;
 
-        // Meal stores airlineId, not an Airline entity.
-        // Fetch AirlineResponse through your airline service/client if required.
-        AirlineResponse airlineResponse = null;
-        return MealMapper.toResponse(saved, ancillaryResponse, airlineResponse);
+
+        return MealMapper.toResponse(
+                saved,
+                ancillaryResponse,
+                airlineResponse);
     }
 
     @Override
@@ -147,8 +197,9 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public List<MealResponse> getMealsByAirlineId(Long airlineId) {
-        return mealRepository.findByAirlineId(airlineId)
+    public List<MealResponse> getMealsByAirlineId(Long userId) {
+        AirlineResponse response =  airlineClient.getAirlineByOwnerId(userId);
+        return mealRepository.findByAirlineId(response.getId())
                 .stream()
                 .map(this::toMealResponse)
                 .toList();

@@ -51,7 +51,7 @@ public class BookingController {
                     description = "Booking already exists")
     })
     public ResponseEntity<PaymentInitiatResponse> createBooking(
-            @RequestParam("X-User-id") Long userId,
+            @RequestHeader("X-User-Id") Long userId,
             @Valid @RequestBody BookingRequest request
             ){
                 PaymentInitiatResponse response =
@@ -136,10 +136,10 @@ public class BookingController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false)BookingStatus status,
             @RequestParam(required = false) Long flightInstanceId,
-            @RequestHeader("X-Airline_Id") Long airlineId
+            @RequestHeader("X-User-Id") Long userId
             ){
             List<BookingResponse> bookingResponses = bookingService
-                    .getAllBookingsByAirline(airlineId,search,status,flightInstanceId);
+                    .getAllBookingsByAirline(userId,search,status,flightInstanceId);
 
             return ResponseEntity.ok(bookingResponses);
     }

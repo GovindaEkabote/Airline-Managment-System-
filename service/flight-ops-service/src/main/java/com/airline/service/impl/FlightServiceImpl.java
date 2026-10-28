@@ -34,13 +34,15 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public FlightResponse createFlight(
-            Long airlineId,
+            Long userId,
             FlightRequest flightRequest) {
+
+        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
     if (flightRepository.existsByFlightNumber(flightRequest.getFlightNumber())){
         throw new DuplicateResourceException("Flight number already exists", "Flight", flightRequest.getFlightNumber());
     }
         Flight flight = FlightMapper.toEntity(flightRequest);
-        flight.setAirlineId(airlineId);
+        flight.setAirlineId(airlineResponse.getId());
         Flight saved = flightRepository.save(flight);
         return convertIntoFlightResponse(saved);
     }
@@ -54,12 +56,13 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Page<FlightResponse> getFlightByAirline(Long airlineId,
+    public Page<FlightResponse> getFlightByAirline(Long userId,
                                                    Long departureAirportId,
                                                    Long arrivalAirportId,
                                                    Pageable pageable) {
+        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
         return flightRepository
-                .findByAirlineId(airlineId, departureAirportId, arrivalAirportId, pageable)
+                .findByAirlineId(airlineResponse.getId(), departureAirportId, arrivalAirportId, pageable)
                 .map(this::convertIntoFlightResponse);
     }
 
@@ -103,8 +106,9 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void deleteFlight(Long airlineId,Long id) {
-        Flight flight = flightRepository.findByAirlineIdAndId(airlineId, id)
+    public void deleteFlight(Long userId,Long id) {
+        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
+        Flight flight = flightRepository.findByAirlineIdAndId(airlineResponse.getId(), id)
                 .orElseThrow(() -> new ResourceNotFoundException("Flight not found with id: " + id));
         flightRepository.delete(flight);
     }

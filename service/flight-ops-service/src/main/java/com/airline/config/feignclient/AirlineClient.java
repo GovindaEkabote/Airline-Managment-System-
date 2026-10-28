@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(name = "AIRLINE-SERVICE")
 public interface AirlineClient {
@@ -49,4 +50,8 @@ public interface AirlineClient {
     AircraftResponse getAircraftById(
             @Parameter(description = "Aircraft ID")
             @PathVariable Long id);
+
+    @GetMapping("/api/v1/airlines/owner/{ownerId}")
+    AirlineResponse getAirlineByOwnerId(@RequestHeader("X-User-Id") Long ownerId);
+
 }

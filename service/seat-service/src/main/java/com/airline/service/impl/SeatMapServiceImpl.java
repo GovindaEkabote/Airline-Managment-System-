@@ -1,11 +1,13 @@
 package com.airline.service.impl;
 
+import com.airline.config.feignClient.AirlineClient;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.SeatMapMapper;
 import com.airline.model.CabinClass;
 import com.airline.model.SeatGenerationRequest;
 import com.airline.model.SeatMap;
 import com.airline.playload.request.SeatMapRequest;
+import com.airline.playload.response.AirlineResponse;
 import com.airline.playload.response.SeatMapResponse;
 import com.airline.repository.CabinClassRepository;
 import com.airline.repository.SeatMapRepository;
@@ -28,12 +30,13 @@ public class SeatMapServiceImpl implements SeatMapService {
     private final SeatMapRepository seatMapRepository;
     private final CabinClassRepository  cabinClassRepository;
     private final SeatService seatService;
-
+    private final AirlineClient airlineClient;
 
 
     @Override
-    public SeatMapResponse create(Long airlineId, SeatMapRequest request) throws Exception {
+    public SeatMapResponse create(Long userId, SeatMapRequest request) throws Exception {
 
+        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
         validateLayout(request);
         CabinClass cabinClass = cabinClassRepository.findById(request.getCabinClassId())
                 .orElseThrow(() ->
@@ -43,7 +46,7 @@ public class SeatMapServiceImpl implements SeatMapService {
                 );
 
         if (seatMapRepository.existsByAirlineIdAndCabinClassId(
-                airlineId,
+                airlineResponse.getId(),
                 request.getCabinClassId()
         )) {
             throw new Exception("Cabin class already exists for the given airline");
@@ -51,7 +54,7 @@ public class SeatMapServiceImpl implements SeatMapService {
 
         SeatMap seatMap = SeatMapMapper.toEntity(request, cabinClass);
 
-        seatMap.setAirlineId(airlineId);
+        seatMap.setAirlineId(airlineResponse.getId());
 
         SeatMap savedSeatMap = seatMapRepository.save(seatMap);
         seatService.generateSeatsForSeatMap(savedSeatMap.getId());
@@ -75,7 +78,7 @@ public class SeatMapServiceImpl implements SeatMapService {
     }
 
     @Override
-    public Page<SeatMapResponse> getByAirlineId(Long airlineId, Pageable pageable) {
+    public Page<SeatMapResponse> getByAirlineId(Long userId, Pageable pageable) {
         return null;
     }
 

@@ -110,7 +110,7 @@ public class AirlineController {
             )
     })
     public ResponseEntity<AirlineResponse> getAirlineByOwnerId(
-            @PathVariable Long ownerId) {
+            @RequestHeader("X-User-Id") Long ownerId) {
 
         AirlineResponse response =
                 airlineService.getAirlineByOwnerId(ownerId);

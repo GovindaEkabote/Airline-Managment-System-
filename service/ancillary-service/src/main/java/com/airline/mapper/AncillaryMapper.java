@@ -1,5 +1,6 @@
 package com.airline.mapper;
 
+import com.airline.config.feignClient.AirlineClient;
 import com.airline.model.Ancillary;
 import com.airline.playload.request.AncillaryRequest;
 import com.airline.playload.response.AirlineResponse;
@@ -10,11 +11,8 @@ import java.util.List;
 
 public class AncillaryMapper {
 
-    private AncillaryMapper() {
+    public static Ancillary toEntity(AncillaryRequest request, Long ownerId){
 
-    }
-
-    public static Ancillary toEntity(AncillaryRequest request, Long airlineID){
 
         if (request == null){
             return null;
@@ -28,7 +26,7 @@ public class AncillaryMapper {
                 .description(request.getDescription())
                 .ancillaryMataData(request.getAncillaryMataData())
                 .displayOrder(request.getDisplayOrder())
-                .airlineId(airlineID)
+                .airlineId(ownerId)
                 .build();
     }
 

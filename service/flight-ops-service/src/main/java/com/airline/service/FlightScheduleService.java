@@ -10,12 +10,12 @@ import java.util.List;
 
 public interface FlightScheduleService {
     FlightScheduleResponse createFlightSchedule(
-            Long flightId,
+            Long userId,
             FlightScheduleRequest flightSchedule);
 
     FlightScheduleResponse getFlightScheduleById(Long id);
 
-        List<FlightScheduleResponse> getFlightSchedulesByAirline(Long airlineId);
+        List<FlightScheduleResponse> getFlightSchedulesByAirline(Long userId);
 
     FlightScheduleResponse updateFlightSchedule(
             Long scheduleId,

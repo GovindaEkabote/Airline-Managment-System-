@@ -11,14 +11,14 @@ import java.util.List;
 
 public interface FlightService {
 
-    FlightResponse createFlight(Long airlineId, FlightRequest flightRequest);
+    FlightResponse createFlight(Long userId, FlightRequest flightRequest);
     List<FlightResponse> getAllFlights();
-    Page<FlightResponse> getFlightByAirline(Long airlineId,
+    Page<FlightResponse> getFlightByAirline(Long userId,
                                             Long departureAirportId,
                                             Long arrivalAirportId,
                                             Pageable pageable);
     FlightResponse getFlightById(Long id);
     FlightResponse updateFlight(Long id, FlightRequest flightRequest);
     FlightResponse changeStatus(Long id, FlightStatus status);
-    void deleteFlight(Long airlineId, Long id);
+    void deleteFlight(Long userId, Long id);
 }

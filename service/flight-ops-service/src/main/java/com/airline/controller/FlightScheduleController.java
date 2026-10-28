@@ -59,10 +59,10 @@ public class FlightScheduleController {
             )
     })
     public ResponseEntity<FlightScheduleResponse> createFlightSchedule(
-            @RequestHeader("airlineId") Long airlineId,
+            @RequestHeader("X-User-Id") Long userId,
             @RequestBody FlightScheduleRequest request) {
         FlightScheduleResponse flightScheduleResponse =
-                flightScheduleService.createFlightSchedule(airlineId,
+                flightScheduleService.createFlightSchedule(userId,
                         request);
         return ResponseEntity
                 .status(201)
@@ -98,10 +98,10 @@ public class FlightScheduleController {
 
     @GetMapping("/airlineId/{airlineId}")
     public ResponseEntity<List<FlightScheduleResponse>> getFlightSchedulesByAirline(
-            @PathVariable Long airlineId
+            @RequestHeader("X-User-Id") Long userId
     ){
         List<FlightScheduleResponse> flightScheduleResponse =
-                flightScheduleService.getFlightSchedulesByAirline(airlineId);
+                flightScheduleService.getFlightSchedulesByAirline(userId);
         return ResponseEntity.ok(flightScheduleResponse);
     }
 

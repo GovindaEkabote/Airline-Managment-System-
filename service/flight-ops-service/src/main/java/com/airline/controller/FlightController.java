@@ -62,13 +62,13 @@ public class FlightController {
             )
     })
     public ResponseEntity<FlightResponse> createFlight(
-            @RequestHeader("Airline-Id") Long airlineId,
+            @RequestHeader("X-User-Id") Long userId,
             @RequestBody FlightRequest flightRequest
     ) {
 
         FlightResponse flightResponse =
                 flightService.createFlight(
-                        airlineId,
+                        userId,
                         flightRequest
                 );
 
@@ -128,7 +128,7 @@ public class FlightController {
             )
     })
     public ResponseEntity<Page<FlightResponse>> getFlightByAirlineId(
-            @RequestHeader("Airline-Id") Long airlineId,
+            @RequestHeader("X-User-Id") Long userId,
             @RequestParam(required = false) Long departureAirportId,
             @RequestParam(required = false) Long arrivalAirportId,
             Pageable pageable
@@ -136,7 +136,7 @@ public class FlightController {
 
         return ResponseEntity.ok(
                 flightService.getFlightByAirline(
-                        airlineId,
+                        userId,
                         departureAirportId,
                         arrivalAirportId,
                         pageable
@@ -265,12 +265,12 @@ public class FlightController {
             )
     })
     public ResponseEntity<Void> deleteFlight(
-            @RequestHeader("Airline-Id") Long airlineId,
+            @RequestHeader("X-User-Id") Long userId,
             @PathVariable Long id
     ) {
 
         flightService.deleteFlight(
-                airlineId,
+                userId,
                 id
         );
 

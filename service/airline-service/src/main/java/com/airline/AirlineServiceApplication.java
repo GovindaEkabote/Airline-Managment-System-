@@ -9,7 +9,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class AirlineServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AirlineServiceApplication.class, args);
+
+        SpringApplication.run(AirlineServiceApplication.class, args);
+        System.out.println("Airline Service Started");
 	}
 
 }
