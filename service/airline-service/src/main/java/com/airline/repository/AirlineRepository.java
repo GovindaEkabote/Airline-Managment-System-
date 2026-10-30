@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AirlineRepository extends JpaRepository<Airline, Long> {
 
-    Optional<Airline> findByOwnerId(Long ownerId);
+    Optional<Airline> findByOwnerId(Long userId);
     Optional<Airline> findByIataCode(String iataCode);
 
     Optional<Airline> findByIcaoCode(String icaoCode);

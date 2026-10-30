@@ -51,12 +51,12 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     @Override
-    public AirlineResponse getAirlineByOwnerId(Long ownerId) {
+    public AirlineResponse getAirlineByOwnerId(Long userId) {
 
-        Airline airline = airlineRepository.findByOwnerId(ownerId)
+        Airline airline = airlineRepository.findByOwnerId(userId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
-                                "Airline not found with owner id: " + ownerId
+                                "Airline not found with owner id: " + userId
                         )
                 );
 

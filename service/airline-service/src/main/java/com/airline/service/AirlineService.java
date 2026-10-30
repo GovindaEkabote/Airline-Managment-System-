@@ -13,7 +13,7 @@ public interface AirlineService {
 
     AirlineResponse createAirline(AirlineRequest airlineRequest, Long ownerId);
     AirlineResponse getAirlineById(Long id);
-    AirlineResponse getAirlineByOwnerId(Long ownerId);
+    AirlineResponse getAirlineByOwnerId(Long userId);
     AirlineResponse getAirlineByIataCode(String iataCode);
     AirlineResponse getAirlineByIcaoCode(String icaoCode);
     Page<AirlineResponse> getAllAirlines(Pageable pageable);

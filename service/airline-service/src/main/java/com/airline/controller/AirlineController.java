@@ -97,7 +97,7 @@ public class AirlineController {
     // GET BY OWNER
     // =========================================================
 
-    @GetMapping("/owner/{ownerId}")
+    @GetMapping("/owner")
     @Operation(summary = "Get airline by owner ID")
     @ApiResponses({
             @ApiResponse(
@@ -110,10 +110,10 @@ public class AirlineController {
             )
     })
     public ResponseEntity<AirlineResponse> getAirlineByOwnerId(
-            @RequestHeader("X-User-Id") Long ownerId) {
+            @RequestHeader("X-User-Id") Long userId) {
 
         AirlineResponse response =
-                airlineService.getAirlineByOwnerId(ownerId);
+                airlineService.getAirlineByOwnerId(userId);
 
         return ResponseEntity.ok(response);
     }
