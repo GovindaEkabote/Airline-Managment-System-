@@ -37,12 +37,30 @@ public class FlightServiceImpl implements FlightService {
             Long userId,
             FlightRequest flightRequest) {
 
-        AirlineResponse airlineResponse = airlineClient.getAirlineByOwnerId(userId);
-    if (flightRepository.existsByFlightNumber(flightRequest.getFlightNumber())){
+        AirlineResponse airlineResponse =
+                airlineClient.getAirlineByOwnerId(userId);
+
+    if (flightRepository.existsByFlightNumber(
+            flightRequest.getFlightNumber())){
         throw new DuplicateResourceException("Flight number already exists", "Flight", flightRequest.getFlightNumber());
     }
         Flight flight = FlightMapper.toEntity(flightRequest);
         flight.setAirlineId(airlineResponse.getId());
+        if (flight.getScheduledDeparture() == null ||
+                flight.getScheduledArrival() == null) {
+
+            throw new IllegalArgumentException(
+                    "Scheduled departure and arrival are required"
+            );
+        }
+
+        if (!flight.getScheduledArrival()
+                .isAfter(flight.getScheduledDeparture())) {
+
+            throw new IllegalArgumentException(
+                    "Scheduled arrival must be after scheduled departure"
+            );
+        }
         Flight saved = flightRepository.save(flight);
         return convertIntoFlightResponse(saved);
     }

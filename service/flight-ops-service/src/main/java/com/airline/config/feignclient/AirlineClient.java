@@ -51,7 +51,7 @@ public interface AirlineClient {
             @Parameter(description = "Aircraft ID")
             @PathVariable Long id);
 
-    @GetMapping("/api/v1/airlines/owner/{ownerId}")
-    AirlineResponse getAirlineByOwnerId(@RequestHeader("X-User-Id") Long ownerId);
+    @GetMapping("/api/v1/airlines/owner")
+    AirlineResponse getAirlineByOwnerId(@RequestHeader("X-User-Id") Long userId);
 
 }

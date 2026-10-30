@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface AirlineService {
 
-    AirlineResponse createAirline(AirlineRequest airlineRequest, Long ownerId);
+    AirlineResponse createAirline(AirlineRequest airlineRequest, Long userId);
     AirlineResponse getAirlineById(Long id);
     AirlineResponse getAirlineByOwnerId(Long userId);
     AirlineResponse getAirlineByIataCode(String iataCode);

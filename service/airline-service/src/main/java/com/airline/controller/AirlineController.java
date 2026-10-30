@@ -58,10 +58,10 @@ public class AirlineController {
     })
     public ResponseEntity<AirlineResponse> createAirline(
             @Valid @RequestBody AirlineRequest request,
-            @RequestParam Long ownerId) {
+            @RequestHeader("X-User-Id") Long userId) {
 
         AirlineResponse response =
-                airlineService.createAirline(request, ownerId);
+                airlineService.createAirline(request, userId);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
