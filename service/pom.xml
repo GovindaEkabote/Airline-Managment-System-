@@ -15,7 +15,7 @@
 
     <artifactId>service</artifactId>
     <packaging>pom</packaging>
-    <name>Bussiness Services</name>
+    <name>Business Services</name>
     <description>Business Services for Airline Management System</description>
 
     <!-- =========================
@@ -29,7 +29,7 @@
         <module>pricing-service</module>
         <module>seat-service</module>
         <module>ancillary-service</module>
-        <module> booking-service</module>
+        <module>booking-service</module>
         <module>payment-service</module>
     </modules>
 </project>
