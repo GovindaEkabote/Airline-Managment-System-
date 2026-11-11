@@ -21,6 +21,12 @@ import java.time.Instant;
                 @Index(name = "idx_airline_name", columnList = "name"),
                 @Index(name = "idx_airline_status", columnList = "status"),
                 @Index(name = "idx_airline_headquarters_city", columnList = "headquarters_city_id")
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_airline_owner",
+                        columnNames = "owner_id"
+                )
         }
 )
 @Getter

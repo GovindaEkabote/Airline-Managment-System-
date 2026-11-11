@@ -3,6 +3,8 @@ package com.airline.service.impl;
 import com.airline.config.feignclient.AirlineClient;
 import com.airline.config.feignclient.AirportClient;
 import com.airline.enums.FlightStatus;
+import com.airline.event.FlightInstanceCreatedEvent;
+import com.airline.event.FlightInstanceEventProducer;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.FlightInstanceMapper;
 import com.airline.mapper.FlightMapper;
@@ -30,6 +32,7 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
     private final FlightRepository flightRepository;
     private final AirlineClient airlineClient;
     private final AirportClient airportClient;
+    private final  FlightInstanceEventProducer FlightInstanceEventProducer;
 
     @Override
     public FlightInstanceResponse createFlightInstance(
@@ -73,6 +76,12 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
                 flightInstanceRepository.save(flightInstance);
 
         // publish kafka event,
+        FlightInstanceCreatedEvent event = FlightInstanceCreatedEvent.builder()
+                .flightInstanceId(flightInstance.getId())
+                .aircraftId(flight.getAircraftId())
+                .flightId(flight.getId())
+                .build();
+        FlightInstanceEventProducer.sendFlightInstanceCreated(event);
 
         return convertIntoFlightInstanceResponse(
                 savedFlightInstance

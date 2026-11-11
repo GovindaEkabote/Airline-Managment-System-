@@ -78,7 +78,7 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user")
     @Operation(
             summary = "Get Booking by User ID",
             description = "Retrieves an booking service by its ID."
@@ -90,7 +90,7 @@ public class BookingController {
                     description = "Booking not found")
     })
     public ResponseEntity<List<BookingResponse>>  getBookingsByUser(
-            @RequestParam Long userId
+            @RequestHeader("X-User-Id") Long userId
     ){
         List<BookingResponse> response = bookingService.getBookingsByUser(userId);
         return ResponseEntity.status(HttpStatus.FOUND).body(response);

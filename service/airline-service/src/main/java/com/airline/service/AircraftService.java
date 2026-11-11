@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AircraftService {
 
-    public AircraftResponse saveAircraft(AircraftRequest aircraft);
+    AircraftResponse saveAircraft(AircraftRequest aircraft, Long userId) throws Exception;
     AircraftResponse getAircraft(Long id);
     Page<AircraftResponse> getAllAircrafts(
             Pageable pageable

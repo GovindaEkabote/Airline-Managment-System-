@@ -48,12 +48,12 @@ public class FlightInstanceCabinServiceImpl implements FlightInstanceCabinServic
             throw new ResourceNotFoundException("No Seat Found in Seat Map");
         }
 
-        int totalSeate = seatMap.getSeats().size();
+        int totalSeats = seatMap.getSeats().size();
 
         FlightInstanceCabin cabin = FlightInstanceCabin.builder()
                 .flightInstanceId(request.getFlightInstanceId())
                 .cabinClass(cabinClass)
-                .totalSeats(totalSeate)
+                .totalSeats(totalSeats)
                 .bookedSeats(0)
                 .build();
 

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,7 +61,8 @@ public class FlightScheduleController {
     })
     public ResponseEntity<FlightScheduleResponse> createFlightSchedule(
             @RequestHeader("X-User-Id") Long userId,
-            @RequestBody FlightScheduleRequest request) {
+            @Valid  @RequestBody FlightScheduleRequest request) {
+
         FlightScheduleResponse flightScheduleResponse =
                 flightScheduleService.createFlightSchedule(userId,
                         request);

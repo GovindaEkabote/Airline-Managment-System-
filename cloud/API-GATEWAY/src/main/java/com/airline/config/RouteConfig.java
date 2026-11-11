@@ -101,7 +101,7 @@ public class RouteConfig {
                         HandlerFunctions.http())
                 .route(RequestPredicates.path("/api/v1/flight/instance/cabin/**"),
                         HandlerFunctions.http())
-                .filter(LoadBalancerFilterFunctions.lb("AIRLINE-SERVICE"))
+                .filter(LoadBalancerFilterFunctions.lb("SEAT-SERVICE"))
                 .before(this::jwtAuthFilter)
                 .build();
     }

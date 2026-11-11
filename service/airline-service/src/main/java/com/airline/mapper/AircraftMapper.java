@@ -2,6 +2,7 @@ package com.airline.mapper;
 
 import com.airline.enums.AircraftStatus;
 import com.airline.model.Aircraft;
+import com.airline.model.Airline;
 import com.airline.playload.request.AircraftRequest;
 import com.airline.playload.response.AircraftResponse;
 
@@ -9,7 +10,7 @@ import java.util.Date;
 
 public class AircraftMapper {
 
-    public static Aircraft toEntity(AircraftRequest aircraftRequest) {
+    public static Aircraft toEntity(AircraftRequest aircraftRequest, Airline airline) {
 
         if (aircraftRequest == null){
             return null;

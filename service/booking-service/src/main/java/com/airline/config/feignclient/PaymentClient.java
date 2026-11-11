@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "PAYMENT-SERVICE")
 public interface PaymentClient {
 
-    @PostMapping(
-            value = "/api/v1/payment",
-            consumes = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping("/api/v1/payment")
     PaymentInitiatResponse initiatePayment(
             @Valid @RequestBody PaymentInitiatRequest request
     );

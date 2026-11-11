@@ -45,7 +45,33 @@ public class UserController {
     // GET USER BY ID
     // =========================================================
 
-    @GetMapping("/{id}")
+//    @GetMapping("/{id}")
+//    @Operation(
+//            summary = "Get user by ID",
+//            description = "Fetch a user using their unique ID"
+//    )
+//    @ApiResponses({
+//            @ApiResponse(
+//                    responseCode = "200",
+//                    description = "User found"
+//            ),
+//            @ApiResponse(
+//                    responseCode = "404",
+//                    description = "User not found"
+//            )
+//    })
+//    public ResponseEntity<UserResponse> getUserById(
+//            @PathVariable Long id
+//    ) {
+//
+//        log.info("Fetching user with id: {}", id);
+//
+//        return ResponseEntity.ok(
+//                userService.getUserById(id)
+//        );
+//    }
+
+    @GetMapping("/{userId}")
     @Operation(
             summary = "Get user by ID",
             description = "Fetch a user using their unique ID"
@@ -60,14 +86,14 @@ public class UserController {
                     description = "User not found"
             )
     })
-    public ResponseEntity<UserResponse> getUserById(
-            @PathVariable Long id
+    public ResponseEntity<UserDto> getUserByIds(
+            @PathVariable Long userId
     ) {
 
-        log.info("Fetching user with id: {}", id);
+        log.info("Fetching user with id: {}", userId);
 
         return ResponseEntity.ok(
-                userService.getUserById(id)
+                userService.getUserByIds(userId)
         );
     }
 
@@ -208,9 +234,7 @@ public class UserController {
             )
     })
     public ResponseEntity<UserResponse> updateUser(
-
             @PathVariable Long id,
-
             @Valid
             @RequestBody UpdateUserRequest request
     ) {

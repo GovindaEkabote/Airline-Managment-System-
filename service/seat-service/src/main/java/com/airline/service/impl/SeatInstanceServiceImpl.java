@@ -1,6 +1,10 @@
 package com.airline.service.impl;
 
+import com.airline.enums.SeatAvailabilityStatus;
+import com.airline.exception.ResourceNotFoundException;
+import com.airline.mapper.SeatInstanceMapper;
 import com.airline.model.SeatInstance;
+import com.airline.playload.response.SeatInstanceResponse;
 import com.airline.repository.SeatInstanceRepository;
 import com.airline.service.SeatInstanceService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +44,20 @@ public class SeatInstanceServiceImpl implements SeatInstanceService {
                         ? instance.getPremiumSurcharge()
                         : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public SeatInstanceResponse updateSeatInstanceResponse(
+            Long seatInstanceId,
+            SeatAvailabilityStatus status
+    ) {
+
+        SeatInstance seatInstance = seatInstanceRepository.findById(seatInstanceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Seat Instance ID not Found"));
+
+        seatInstance.setStatus(status);
+        seatInstanceRepository.save(seatInstance);
+        return SeatInstanceMapper.toResponse(seatInstance);
     }
 
 }

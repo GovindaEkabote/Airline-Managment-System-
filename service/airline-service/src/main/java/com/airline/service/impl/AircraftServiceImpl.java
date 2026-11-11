@@ -6,12 +6,14 @@ import com.airline.exception.DuplicateResourceException;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.AircraftMapper;
 import com.airline.model.Aircraft;
+import com.airline.model.Airline;
 import com.airline.playload.request.AircraftRequest;
 import com.airline.playload.response.AircraftResponse;
 import com.airline.playload.response.AircraftTypeResponse;
 import com.airline.playload.response.AirlineResponse;
 import com.airline.enums.AircraftStatus;
 import com.airline.repository.AircraftRepository;
+import com.airline.repository.AirlineRepository;
 import com.airline.service.AircraftService;
 import com.airline.service.AircraftTypeService;
 import com.airline.service.AirlineService;
@@ -32,6 +34,7 @@ public class AircraftServiceImpl implements AircraftService {
     private final AircraftRepository aircraftRepository;
     private final AircraftTypeService aircraftTypeService;
     private final AirlineService airlineService;
+    private final AirlineRepository airlineRepository;
 
     // =========================================================
     // CREATE
@@ -39,9 +42,12 @@ public class AircraftServiceImpl implements AircraftService {
 
     @Override
     @Transactional
-    public AircraftResponse saveAircraft(AircraftRequest request) {
+    public AircraftResponse saveAircraft(AircraftRequest request, Long userId) throws Exception {
 
         validateUniqueFields(request);
+
+        Airline userIds = airlineRepository.findByOwnerId(userId);
+
 
         // Validate aircraft type
         AircraftTypeResponse aircraftType =
@@ -69,7 +75,7 @@ public class AircraftServiceImpl implements AircraftService {
             );
         }
 
-        Aircraft aircraft = AircraftMapper.toEntity(request);
+        Aircraft aircraft = AircraftMapper.toEntity(request, userIds);
 
         if (aircraft.getStatus() == null) {
             aircraft.setStatus(AircraftStatus.ACTIVE);

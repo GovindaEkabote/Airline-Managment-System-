@@ -17,36 +17,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface AirlineClient {
 
     @GetMapping("/api/v1/airlines/{id}")
-    @Operation(summary = "Get airline by ID")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Airline found"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Airline not found"
-            )
-    })
     AirlineResponse getAirlineById(
             @PathVariable Long id);
 
 
     @GetMapping("/api/v1/aircraft/{id}")
-    @Operation(
-            summary = "Get aircraft by ID",
-            description = "Retrieves an aircraft along with its aircraft type and airline information."
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Aircraft retrieved successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Aircraft not found"
-            )
-    })
     AircraftResponse getAircraftById(
             @Parameter(description = "Aircraft ID")
             @PathVariable Long id);

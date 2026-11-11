@@ -36,6 +36,7 @@ public class CabinClassMapper {
             return null;
         }
         return CabinClassResponse.builder()
+                .name(cabinClass.getName())
                 .id(cabinClass.getId())
                 .seatMapId(seatMap != null ? SeatMapMapper.toResponse(seatMap) : null)
                 .aircraftId(cabinClass.getAircraftId())

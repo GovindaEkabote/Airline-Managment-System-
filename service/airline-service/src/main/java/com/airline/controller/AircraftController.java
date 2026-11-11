@@ -65,10 +65,11 @@ public class AircraftController {
             )
     })
     public ResponseEntity<AircraftResponse> saveAircraft(
-            @Valid @RequestBody AircraftRequest request) {
+            @Valid @RequestBody AircraftRequest request,
+            @RequestHeader("X-User-Id") Long userId) throws Exception {
 
         AircraftResponse response =
-                aircraftService.saveAircraft(request);
+                aircraftService.saveAircraft(request, userId);
 
         return ResponseEntity
                 .status(201)

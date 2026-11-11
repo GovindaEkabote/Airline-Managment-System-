@@ -5,6 +5,7 @@ import com.airline.exception.InvalidCredentialsException;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.UserMapper;
 import com.airline.model.User;
+import com.airline.playload.dto.UserDto;
 import com.airline.playload.response.UpdateUserRequest;
 import com.airline.playload.response.UserResponse;
 import com.airline.repository.UserRepository;
@@ -49,6 +50,19 @@ public class UserServiceImpl implements UserService {
                 ));
         return UserMapper.toResponse(user);
     }
+
+    @Override
+    public UserDto getUserByIds(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "email",
+                        "email",
+                        userId
+                ));
+        return UserMapper.toResponseDto(user);
+    }
+
+
 
     @Override
     public UserResponse updateUser(

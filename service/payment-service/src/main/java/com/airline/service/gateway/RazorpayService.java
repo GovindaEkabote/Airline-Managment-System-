@@ -96,11 +96,13 @@ public class RazorpayService {
         String paymentLinkId = paymentLink.get("id");
         String paymentUrl = paymentLink.get("short_url");
 
-        // 8. Return payment-link details
-        return PaymentLinkResponse.builder()
+        PaymentLinkResponse response = PaymentLinkResponse.builder()
                 .paymentLinkId(paymentLinkId)
                 .paymentUrl(paymentUrl)
                 .build();
+
+        // 8. Return payment-link details
+        return response;
     }
 
 

@@ -17,7 +17,7 @@ public class FlightInstanceCabinMapper {
         return FlightInstanceCabinResponse.builder()
                 .id(response.getId())
                 .flightInstanceId(response.getFlightInstanceId())
-                .cabinClassType(CabinClassType.valueOf(response.getCabinClass().getCode()))
+                .cabinClassType(CabinClassType.valueOf(response.getCabinClass().getName()))
                 .cabinClass(CabinClassMapper.toResponse(
                         response.getCabinClass(), response.getCabinClass().getSeatMap()
                 ))

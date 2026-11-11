@@ -10,6 +10,7 @@ import com.airline.playload.response.AirlineResponse;
 import com.airline.repository.AirlineRepository;
 import com.airline.service.AirlineService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AirlineServiceImpl implements AirlineService {
 
     private final AirlineRepository airlineRepository;
@@ -53,12 +55,15 @@ public class AirlineServiceImpl implements AirlineService {
     @Override
     public AirlineResponse getAirlineByOwnerId(Long userId) {
 
-        Airline airline = airlineRepository.findByOwnerId(userId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Airline not found with owner id: " + userId
-                        )
-                );
+        Airline airline = airlineRepository.findByOwnerId(userId);
+
+        if (airline == null) {
+            throw new ResourceNotFoundException(
+                    "Airline not found for owner",
+                    "userId",
+                    userId
+            );
+        }
 
         return AirlineMapper.toResponse(airline);
     }
@@ -102,12 +107,7 @@ public class AirlineServiceImpl implements AirlineService {
             AirlineRequest request,
             Long ownerId) {
 
-        Airline airline = airlineRepository.findByOwnerId(ownerId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Airline not found with owner id: " + ownerId
-                        )
-                );
+        Airline airline = airlineRepository.findByOwnerId(ownerId);
 
         AirlineMapper.updateEntity(airline, request);
 

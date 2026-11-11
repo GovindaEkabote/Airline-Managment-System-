@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "AIRLINE-SERVICE")
 public interface AirlineClient {
 
-    @GetMapping("/api/v1/airlines/owner/{ownerId}")
+    @GetMapping("/api/v1/airlines/owner")
     AirlineResponse getAirlineByOwnerId(@RequestHeader("X-User-Id") Long ownerId);
 
 }

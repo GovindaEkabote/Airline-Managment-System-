@@ -24,8 +24,9 @@ import java.time.Instant;
 )
 @Getter
 @Setter
-@SuperBuilder
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class SeatInstance extends BaseEntity{
 
@@ -47,7 +48,6 @@ public class SeatInstance extends BaseEntity{
     private Seat seat;
 
     @NotNull
-    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private SeatAvailabilityStatus status = SeatAvailabilityStatus.AVAILABLE;

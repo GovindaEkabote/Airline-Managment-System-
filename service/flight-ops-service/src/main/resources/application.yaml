@@ -19,6 +19,11 @@ spring:
   springdoc:
     packagesToScan: com.airline.controller
 
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      group-id: flight-ops-service-group
+
 
 eureka:
   client:

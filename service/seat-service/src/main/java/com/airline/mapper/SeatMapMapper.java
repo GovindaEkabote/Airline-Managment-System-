@@ -7,6 +7,7 @@ import com.airline.playload.request.SeatMapRequest;
 import com.airline.playload.response.SeatMapResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SeatMapMapper {
 
@@ -76,6 +77,7 @@ public class SeatMapMapper {
 
         return SeatMapResponse.builder()
                 .id(map.getId())
+                .seats(seats != null ? seats.stream().map(SeatMapper::toResponse).collect(Collectors.toList()) : null)
                 .name(map.getName())
                 .totalRows(map.getTotalRows())
                 .leftSeatsPerRow(map.getLeftSeatsPerRow())

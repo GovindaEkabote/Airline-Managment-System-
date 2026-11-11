@@ -29,6 +29,24 @@ public class UserMapper {
                 .build();
     }
 
+    public static UserDto toResponseDto(User user) {
+
+        if (user == null) {
+            return null;
+        }
+
+        return UserDto.builder()
+                .id(user.getId())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .role(user.getRole())
+                .active(user.isActive())
+                .verified(user.isVerified())
+                .lastLoginAt(user.getLastLoginAt())
+                .build();
+    }
+
     public static List<UserResponse> toDTOList(List<User> user){
         return user
                 .stream()
