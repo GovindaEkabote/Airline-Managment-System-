@@ -22,5 +22,6 @@ public interface FareService {
             List<Long> flightIds, Long cabinClassId
     );
 
+    FareResponse getLowestFareForFlightAndCabin(Long flightId, Long cabinClassId);
     Map<Long, FareResponse> getFaresByIds(List<Long> ids);
 }

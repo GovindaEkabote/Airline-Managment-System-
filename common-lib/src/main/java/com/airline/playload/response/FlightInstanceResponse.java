@@ -45,5 +45,7 @@ public class FlightInstanceResponse {
 
     private Boolean isActive;
 
+    private FareResponse fareResponse;
+
 
 }

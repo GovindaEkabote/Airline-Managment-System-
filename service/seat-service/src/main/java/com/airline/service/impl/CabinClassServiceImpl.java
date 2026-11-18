@@ -1,4 +1,5 @@
 package com.airline.service.impl;
+import com.airline.enums.CabinClassType;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.mapper.CabinClassMapper;
 import com.airline.model.CabinClass;
@@ -90,6 +91,12 @@ public class CabinClassServiceImpl implements CabinClassService {
         CabinClass updatedCabinClass =
                 cabinClassRepository.save(cabinClass);
         return CabinClassMapper.toResponse(updatedCabinClass, null);
+    }
+
+    @Override
+    public CabinClassResponse getByAircraftIdAndName(Long aircraftId, CabinClassType name) {
+        CabinClass cabinClass = cabinClassRepository.findByAircraftIdAndName(aircraftId,name);
+        return CabinClassMapper.toResponse(cabinClass,null);
     }
 
     @Override

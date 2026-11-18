@@ -1,5 +1,6 @@
 package com.airline.repository;
 
+import com.airline.enums.CabinClassType;
 import com.airline.model.CabinClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -20,4 +21,6 @@ public interface CabinClassRepository extends JpaRepository<CabinClass, Long> {
 
     // Duplicate check on update (ignore the row being updated)
     boolean existsByAircraftIdAndCodeAndIdNot(Long aircraftId, String code, Long id);
+
+    CabinClass findByAircraftIdAndName(Long aircraftId, CabinClassType name);
 }

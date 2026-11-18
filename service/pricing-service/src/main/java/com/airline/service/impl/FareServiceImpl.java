@@ -10,6 +10,7 @@ import com.airline.service.FareService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -106,6 +107,16 @@ public class FareServiceImpl implements FareService {
                         Map.Entry::getKey,
                         entry -> FareMapper.toResponse(entry.getValue())
                 ));
+    }
+
+    @Override
+    public FareResponse getLowestFareForFlightAndCabin(Long flightId, Long cabinClassId) {
+
+        List<Fare> fares = fareRepository.findByFlightIdAndCabinClassId(flightId, cabinClassId);
+        Fare lowestFare = fares.stream()
+                .min(Comparator.comparing(Fare::getTotalPrice))
+                .orElseThrow(() -> new RuntimeException("No fares found"));
+        return FareMapper.toResponse(lowestFare);
     }
 
     @Override

@@ -18,6 +18,7 @@ public interface CabinClassService {
 
     CabinClassResponse setActive(Long id, boolean active);
 
+    CabinClassResponse getByAircraftIdAndName(Long aircraftId, CabinClassType name);
 
     void delete(Long id);
 }

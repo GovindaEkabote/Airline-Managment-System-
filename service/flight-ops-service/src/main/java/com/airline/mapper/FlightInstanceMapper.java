@@ -102,6 +102,72 @@ public class FlightInstanceMapper {
 
     }
 
+
+    public static FlightInstanceResponse toResponse2(
+            FlightInstance flightInstance,
+//            FlightResponse flightResponse,
+            AircraftResponse aircraftResponse,
+            AirlineResponse airlineResponse,
+            AirportResponse departureAirportResponse,
+            AirportResponse arrivalAirportResponse) {
+
+        if (flightInstance == null) {
+            return null;
+        }
+
+
+        return FlightInstanceResponse.builder()
+                .id(flightInstance.getId())
+
+                .airline(airlineResponse)
+                .departureAirport(
+                        departureAirportResponse
+                )
+                .aircraft(aircraftResponse)
+                .arrivalAirport(
+                        arrivalAirportResponse
+                )
+                .scheduleId(
+                        flightInstance.getScheduleId()
+                )
+                .departureDateTime(
+                        flightInstance.getDepartureDateTime()
+                )
+                .arrivalDateTime(
+                        flightInstance.getArrivalDateTime()
+                )
+                .formattedDuration(
+                        flightInstance.getFormatedDuration()
+                )
+
+                .totalSeats(
+                        flightInstance.getTotalSeats()
+                )
+
+                .availableSeats(
+                        flightInstance.getAvailableSeats()
+                )
+
+                .status(
+                        flightInstance.getStatus()
+                )
+
+                .minAdvanceBookingDays(
+                        flightInstance.getMinAdvanceBookingDays()
+                )
+
+                .maxAdvanceBookingDays(
+                        flightInstance.getMaxAdvanceBookingDays()
+                )
+
+                .isActive(
+                        flightInstance.getIsActive()
+                )
+
+                .build();
+
+    }
+
     public static FlightInstance updateEntity(
             FlightInstance flightInstance,
             FlightInstanceRequest request) {
@@ -183,4 +249,6 @@ public class FlightInstanceMapper {
 
         return flightInstance;
     }
+
+
 }

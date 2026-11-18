@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,14 +21,11 @@ public class FlightSearchRequest {
     private Long departureAirportId;
 
     private Long arrivalAirportId;
-
-    @NotNull(message = "Departure date is required")
-    private LocalDate departureAirportTime;
+    private LocalDate departureDateTime;
 
     @Min(value = 1, message = "At least one passenger is required")
     private Integer passengers;
 
-    @NotNull(message = "Cabin class is required")
     private CabinClassType cabinClassType;
 
     // Filter parameters

@@ -198,4 +198,13 @@ public class CabinClassController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/aircraft/{id}/name/{cabinClassType}")
+    public ResponseEntity<CabinClassResponse> getCabinClassByAircraftIdAndName(
+            @PathVariable("cabinClassType") CabinClassType cabinClassType,
+            @PathVariable Long id
+    ){
+        return ResponseEntity.ok(
+                cabinClassService.getByAircraftIdAndName(id,cabinClassType)
+        );
+    }
 }
