@@ -1,37 +1,11 @@
-server:
-  port: 8085
-
 spring:
   application:
     name: payment-service
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/airline_payment_db
-    username: root
-    password: Govinda@1997
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
-  kafka:
-    bootstrap-servers: localhost:9094
-
-
-springdoc:
-  packages-to-scan: com.airline.controller
+  config:
+    import: optional:configserver:http://config-server:8888
 
 razorpay:
   api:
     key: ${RAZORPAY_API_KEY}
     secret: ${RAZORPAY_API_SECRET}
-
-
-eureka:
-  client:
-    registry-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true

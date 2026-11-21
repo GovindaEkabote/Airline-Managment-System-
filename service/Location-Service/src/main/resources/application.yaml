@@ -1,27 +1,20 @@
-server:
-  port: 8084
-
 spring:
   application:
     name: Location-Service
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/airline_location_db
-    username: root
-    password: Govinda@1997
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 4
+          min-idle: 1
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    cache:
+      type: redis
 
-  springdoc:
-    packagesToScan: com.airline.controller
-
-eureka:
-  client:
-    registry-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
+  config:
+    import: optional:configserver:http://localhost:8888

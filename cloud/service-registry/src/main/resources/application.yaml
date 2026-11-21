@@ -9,3 +9,5 @@ eureka:
   client:
     registry-with-eureka: false
     fetch-registry: false
+  instance:
+    hostname: localhost

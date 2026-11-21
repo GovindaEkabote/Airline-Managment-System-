@@ -26,6 +26,9 @@ D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\enu
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\enums\SeatAvailabilityStatus.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\enums\SeatType.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\enums\TicketStatus.java
+D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\event\FlightInstanceCreatedEvent.java
+D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\event\PaymentCompletedEvent.java
+D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\event\PaymentFailedEvent.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\exception\DuplicateResourceException.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\exception\ErrorResponse.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\exception\InvalidCredentialsException.java
@@ -49,6 +52,7 @@ D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\pla
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\playload\request\FlightMealRequest.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\playload\request\FlightRequest.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\playload\request\FlightScheduleRequest.java
+D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\playload\request\FlightSearchRequest.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\playload\request\InsuranceCoverageRequest.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\playload\request\MealOrderRequest.java
 D:\03_Projects\Airline Managment System\common-lib\src\main\java\com\airline\playload\request\MealRequest.java

@@ -1,29 +1,6 @@
-server:
-  port: 8088
-
 spring:
   application:
     name: User-Service
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/airline_user_db
-    username: root
-    password: Govinda@1997
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
-
-  springdoc:
-    packagesToScan: com.airline.controller
-
-
-eureka:
-  client:
-    registry-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
+  config:
+    import: optional:configserver:http://localhost:8888

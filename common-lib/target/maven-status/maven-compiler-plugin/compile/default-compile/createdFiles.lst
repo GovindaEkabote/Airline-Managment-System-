@@ -71,6 +71,7 @@ com\airline\exception\InvalidCredentialsException.class
 com\airline\playload\response\FlightCabinAncillaryResponse$FlightCabinAncillaryResponseBuilder.class
 com\airline\playload\request\FlightScheduleRequest$FlightScheduleRequestBuilder.class
 com\airline\playload\request\FlightRequest$FlightRequestBuilder.class
+com\airline\event\PaymentFailedEvent$PaymentFailedEventBuilder.class
 com\airline\playload\response\FlightResponse.class
 com\airline\playload\response\TicketResponse.class
 com\airline\playload\request\AircraftTypeRequest.class
@@ -111,6 +112,7 @@ com\airline\enums\AircraftStatus.class
 com\airline\playload\response\UserResponse.class
 com\airline\enums\SeatType.class
 com\airline\playload\request\FlightScheduleRequest.class
+com\airline\event\FlightInstanceCreatedEvent.class
 com\airline\playload\request\CabinClassRequest$CabinClassRequestBuilder.class
 com\airline\embeddable\SeatBenifites$SeatBenifitesBuilder.class
 com\airline\embeddable\Address.class
@@ -118,6 +120,8 @@ com\airline\domain\AncillaryMataData.class
 com\airline\enums\SeatAvailabilityStatus.class
 com\airline\enums\AncillaryType.class
 com\airline\playload\request\MealRequest$MealRequestBuilder.class
+com\airline\event\PaymentFailedEvent.class
+com\airline\event\PaymentCompletedEvent.class
 com\airline\playload\response\AircraftTypeResponse$AircraftTypeResponseBuilder.class
 com\airline\playload\request\AirportRequest.class
 com\airline\playload\request\FlightMealRequest$FlightMealRequestBuilder.class
@@ -141,6 +145,7 @@ com\airline\playload\request\SeatRequest.class
 com\airline\playload\response\SeatInstanceResponse$SeatInstanceResponseBuilder.class
 com\airline\playload\response\BookingResponse.class
 com\airline\embeddable\Address$AddressBuilder.class
+com\airline\event\FlightInstanceCreatedEvent$FlightInstanceCreatedEventBuilder.class
 com\airline\playload\response\FlightInstanceResponse$FlightInstanceResponseBuilder.class
 com\airline\enums\PaymentStatus.class
 com\airline\exception\ErrorResponse.class
@@ -148,9 +153,12 @@ com\airline\playload\response\SeatResponse.class
 com\airline\enums\CabinClassType.class
 com\airline\playload\response\PaymentInitiatResponse.class
 com\airline\playload\request\FareRequest$FareRequestBuilder.class
+com\airline\playload\request\FlightSearchRequest$FlightSearchRequestBuilder.class
 com\airline\playload\response\FlightMealResponse.class
+com\airline\event\PaymentCompletedEvent$PaymentCompletedEventBuilder.class
 com\airline\playload\response\FareResponse$FareResponseBuilder.class
 com\airline\playload\request\FlightCabinAncillaryRequest.class
+com\airline\playload\request\FlightSearchRequest.class
 com\airline\playload\request\BaggagePolicyRequest$BaggagePolicyRequestBuilder.class
 com\airline\playload\response\AirportResponse$AirportResponseBuilder.class
 com\airline\playload\response\TicketResponse$TicketResponseBuilder.class

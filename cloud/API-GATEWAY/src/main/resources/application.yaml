@@ -1,11 +1,19 @@
 server:
   port: 5000
+
 spring:
   application:
     name: API-GATEWAY
+
+  config:
+    import: optional:configserver:http://config-server:8888
+
 eureka:
   client:
-    registry-with-eureka: true
+    register-with-eureka: true
     fetch-registry: true
+    service-url:
+      defaultZone: http://service-registry:8761/eureka/
+
   instance:
     prefer-ip-address: true
