@@ -10,6 +10,9 @@ import com.airline.playload.response.AirportResponse;
 import com.airline.repository.AirportRepository;
 import com.airline.repository.CityRepository;
 import com.airline.service.AirportService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +63,11 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "airports", key = "#id"),
+            @CacheEvict(cacheNames = "allAirports", allEntries = true),
+            @CacheEvict(cacheNames = "airportByCities", allEntries = true)
+    })
     public AirportResponse updateAirport(Long id, AirportRequest airportRequest) {
         Airport airport = airportRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -95,6 +103,11 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "airports", key = "#id"),
+            @CacheEvict(cacheNames = "allAirports", allEntries = true),
+            @CacheEvict(cacheNames = "airportByCities", allEntries = true)
+    })
     public void deleteAirport(Long id) {
         Airport airport = airportRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -106,6 +119,7 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
+    @Cacheable(cacheNames = "airports", key = "#id")
     public AirportResponse getAirport(Long id) {
         Airport airport
                 = airportRepository.findById(id)
@@ -119,12 +133,14 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
+    @Cacheable(cacheNames = "allAirports")
     public Page<AirportResponse> getAllAirports(Pageable pageable) {
         return airportRepository.findByActiveTrue(pageable)
                 .map(AirportMapper::toResonse);
     }
 
     @Override
+    @Cacheable(cacheNames = "airportByCities", key = "#cityId")
     public Page<AirportResponse> getAirportsByCityId(Long cityId, Pageable pageable) {
         City city = cityRepository.findById(cityId)
                 .orElseThrow(() -> new ResourceNotFoundException(
