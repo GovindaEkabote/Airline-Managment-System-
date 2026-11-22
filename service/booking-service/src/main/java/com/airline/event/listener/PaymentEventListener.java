@@ -4,7 +4,9 @@ import com.airline.config.feignclient.FlightClient;
 import com.airline.config.feignclient.PriceClient;
 import com.airline.config.feignclient.UserClient;
 import com.airline.enums.BookingStatus;
+import com.airline.event.BookingConfirmationEvent;
 import com.airline.event.PaymentCompletedEvent;
+import com.airline.event.publisher.BookingEventProducre;
 import com.airline.exception.ResourceNotFoundException;
 import com.airline.model.Booking;
 import com.airline.playload.dto.UserDto;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class PaymentEventListener {
 
     private final BookingRepository bookingRepository;
+    private final BookingEventProducre bookingEventProducre;
     private final FlightClient flightClient;
     private final PriceClient priceClient;
     private final UserClient userClient;
@@ -35,12 +38,19 @@ public class PaymentEventListener {
         booking.setBookingStatus(BookingStatus.CONFIRMED);
         bookingRepository.save(booking);
 
-//        FlightInstanceResponse flightInstanceResponse =
-//                flightClient.getFlightInstanceById(booking.getFlightInstanceId());
-//        FareResponse fareResponse = priceClient.getFareById(booking.getFareId());
-//        UserDto userDto = userClient.getUserByIds(booking.getUserId());
+        FlightInstanceResponse flightInstanceResponse =
+                flightClient.getFlightInstanceById(booking.getFlightInstanceId());
+        FareResponse fareResponse = priceClient.getFareById(booking.getFareId());
+        UserDto userDto = userClient.getUserByIds(booking.getUserId());
 
         // public event for seat service and notification service
+        bookingEventProducre.sendBookingConfirmedEvent(
+                booking,
+                event,
+                flightInstanceResponse,
+                fareResponse,
+                userDto
+        );
 
     }
 

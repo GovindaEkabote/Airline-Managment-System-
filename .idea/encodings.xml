@@ -13,6 +13,8 @@
     <file url="file://$PROJECT_DIR$/common-lib/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/Location-Service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/Location-Service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service/Notification-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service/Notification-Service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/airline-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/airline-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/ancillary-service/src/main/java" charset="UTF-8" />

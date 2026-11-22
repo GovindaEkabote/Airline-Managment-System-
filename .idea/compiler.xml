@@ -23,6 +23,7 @@
         <module name="flight-ops-service" />
         <module name="Location-Service" />
         <module name="booking-service" />
+        <module name="Notification-Service" />
         <module name="seat-service" />
         <module name="user-service" />
         <module name="airline-service" />
@@ -39,6 +40,7 @@
       <module name="API-GATEWAY" options="-parameters" />
       <module name="AirlineSystem" options="" />
       <module name="Location-Service" options="-parameters" />
+      <module name="Notification-Service" options="-parameters" />
       <module name="airline-service" options="-parameters" />
       <module name="ancillary-service" options="-parameters" />
       <module name="booking-service" options="-parameters" />

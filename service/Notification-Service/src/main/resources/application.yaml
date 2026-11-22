@@ -1,0 +1,56 @@
+
+server:
+  port: 8091
+
+spring:
+  application:
+    name: Notification-Service
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:govindaekbote7@gmail.com}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+  kafka:
+    bootstrap-server: localhost:9094
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.airline.event"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.airline.event.BookingConfirmationEvent
+
+  thymeleaf:
+    prefix: classpath:/templated/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id}:${random.value}
+
+notification:
+  from-email: ${MAIN_FROM:govindaekbote7@gmail.com}
+  from-name: "Govinda Ekbote"
+  checkin-url: "your frontend url"

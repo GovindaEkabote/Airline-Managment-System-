@@ -4,3 +4,8 @@ spring:
 
   config:
     import: optional:configserver:http://localhost:8888
+
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      group-id: flight-ops-service-group
